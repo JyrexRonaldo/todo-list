@@ -1,3 +1,102 @@
-h1 {
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+header, footer {
+    background-color: #333333;
+    color: white;
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header  {
+    font-size: 3.8rem;
+}
+
+footer {
+    height: 50px;
+}
+
+main {
+    display: flex;
+    flex-grow: 1;
+}
+
+
+section:first-child {
+    background-color: #DDDDDD;
+    width: 180px;
+    padding: 20px 40px 40px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+section:nth-child(2) {
+    background-color: #EEEEEE;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 40px 0px;
+}
+
+section:first-child div {
+    font-size: 1.8rem;
+    font-weight: bolder;
+    padding-left: 20px;
+}
+
+section li {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-left: 25px;
+}
+
+section li img {
+    width: 25px;
+}
+
+section ul {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+li:hover {
+    background-color: #CCCCCC;
     cursor: pointer;
+}
+
+.selected {
+    background-color: #CCCCCC;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.title {
+    font-weight: bolder;
+    font-size: 2.8rem;
+    /* border: 1px solid black; */
+}
+
+.todo p {
+    font-size: 1.4rem;
+    /* border: 1px solid black */
+}
+
+.content {
+    width: max(700px, 50%);
+    margin: 0px auto;
+}
+
+.done {
+    text-decoration: line-through;
 }

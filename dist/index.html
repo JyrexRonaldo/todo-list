@@ -5,33 +5,45 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="main.js" defer></script>
-    <!-- <link rel="stylesheet" href="../src/reset.css"> -->
+    <script src="../src/index.js" defer></script>
+    <link rel="stylesheet" href="../src/reset.css">
     <link rel="stylesheet" href="../src/style.css">
     <title>Todo List</title>
 </head>
 
 <body>
     <header>
+        <img src="../src/assets/Papirus-Team-Papirus-Apps-Gnome-todo.svg" alt="">
         <h1>Todo List</h1>
     </header>
     <main>
         <section>
             <div>Home</div>
             <ul>
-                <li>All Tasks</li>
-                <li>Today</li>
-                <li>Next 7 Days</li>
-                <li>Important</li>
+                <li class="selected"><img src="../src/assets/inbox-arrow-down.svg" alt="">
+                    All Tasks</li>
+                <li><img src="../src/assets/calendar-today.svg" alt="">
+                    Today</li>
+                <li><img src="../src/assets/calendar-week.svg" alt="">
+                    Next 7 Days</li>
+                <li><img src="../src/assets/exclamation-thick.svg" alt="">
+                    Important</li>
             </ul>
             <div>Projects</div>
             <ul>
-                <li></li>
+                <li><img src="../src/assets/list-status.svg" alt="">
+                    Plenty money</li>
+
+                <li><img src="../src/assets/list-status.svg" alt="">
+                    more money</li>
             </ul>
         </section>
         <section>
-            <p class="content-title"></p>
-            <div class="content"></div>
+            <p class="content title">All task</p>
+            <div class="content todo">
+                <p>Make bed</p>
+                <p>make clothes</p>
+            </div>
         </section>
     </main>
     <footer>
