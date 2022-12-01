@@ -33,7 +33,7 @@ main {
 
 section:first-child {
     background-color: #DDDDDD;
-    width: 180px;
+    width: 300px;
     padding: 20px 40px 20px 20px;
     display: flex;
     flex-direction: column;
@@ -94,7 +94,17 @@ section:first-child li:hover {
     cursor: pointer;
     flex: 1 1 100%;
     padding: 10px;
+    display: flex;
 }
+
+section div.delete-button {
+    margin-left: auto;
+    font-size: 1rem;
+    display: none;
+}
+
+
+
 .todo li:hover {
     background-color: #CCCCCC;
 }
@@ -124,8 +134,9 @@ form.project {
     border-radius: 5px;
     border: 1px solid black;
     padding: 5px;
-    width: 200px;
+    width: 80%;
     gap: 2px;
+    align-self: center;
 }
 
 
