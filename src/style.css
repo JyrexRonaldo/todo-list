@@ -32,7 +32,7 @@ main {
 section:first-child {
     background-color: #DDDDDD;
     width: 180px;
-    padding: 20px 40px 40px 0px;
+    padding: 20px 40px 0px 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -70,7 +70,7 @@ section ul {
     gap: 5px;
 }
 
-li:hover {
+section:first-child li:hover {
     background-color: #CCCCCC;
     cursor: pointer;
 }
@@ -107,10 +107,37 @@ li:hover {
     text-decoration: line-through;
 }
 
-ul {
-  list-style: none;
+ section:nth-child(2) li::before {
+  content: "● ";
 }
 
-ul li::before {
-  content: "● ";
+.todo .add::before, .add::before {
+    content: "✚ ";
+}
+
+form.project {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 5px;
+    width: 200px;
+    gap: 2px;
+}
+
+
+.project input {
+    height: 30px;
+    font-size: large;
+}
+
+form.todo {
+    width: 500px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }

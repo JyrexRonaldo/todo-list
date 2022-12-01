@@ -31,22 +31,45 @@
             </ul>
             <div>Projects</div>
             <ul>
-                <li><img src="../src/assets/list-status.svg" alt="">
+                <li><img src="../src/assets/menu.svg" alt="">
                     Plenty money</li>
 
-                <li><img src="../src/assets/list-status.svg" alt="">
+                <li><img src="../src/assets/menu.svg" alt="">
                     more money</li>
+                <li class="add">Add Project</li>
             </ul>
+            <form class="project" action="#">
+                <input type="text" name="" id="">
+                <button type="button">Add</button>
+                <button type="button">Cancel</button>
+            </form>
         </section>
         <section>
             <p class="content title">All task</p>
             <ul class="content todo">
-                <li>Make bed
-                    <input type="date" name="" id="">
-                </li>
+                <li>Make bed</li>
                 <li>make clothes</li>
                 <li>make more cash</li>
+                <li class="add">Add Task</li>
             </ul>
+            <form class="todo" action="">
+                <div>
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" placeholder="What to do?">
+                  </div>
+                  <div>
+                    <label for="details">Details(optional):</label>
+                    <input type="text" id="details" name="details" placeholder="eg: I'm going to make my bed">
+                  </div>
+                  <div>
+                    <label for="date">Date:</label>
+                    <input type="date" name="date" id="date">
+                  </div>
+                <div class="form-button">
+                    <button type="button">Add</button>
+                    <button type="button">Cancel</button>
+                </div>
+            </form>
         </section>
     </main>
     <footer>
