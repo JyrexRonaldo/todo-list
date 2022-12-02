@@ -23,12 +23,30 @@ const TodoFactory = (title, description, dueDate, priority) => {
 
 const todoController = (function(projects) {
 
-    function addTodo(currentProjectIndex, title, description, dueDate, priority) {
-        const newTodo = TodoFactory(title, description, dueDate, priority)
-        projects.getProject(currentProjectIndex).push(newTodo)
+    function addTodo(currentProjectIndex, newTitle, newDescription, newDueDate, newPriority) {
+        const newTodo = TodoFactory(newTitle, newDescription, newDueDate, newPriority);
+        projects.getProject(currentProjectIndex).push(newTodo);
+    }
+
+    function removeTodo(currentProjectIndex, currentTodoIndex) {
+        projects.getProject[currentProjectIndex].splice(currentTodoIndex, 1);
+    }
+
+    function _getTodo(currentProjectIndex, currentTodoIndex) {
+        return projects.getProject[currentProjectIndex][currentTodoIndex];
+    }
+
+    function editTodo(newTitle, newDescription, newDueDate, newPriority, currentProjectIndex, currentTodoIndex) {
+        const selectedTodo = _getTodo(currentProjectIndex, currentTodoIndex)
+        selectedTodo.title = newTitle ? newTitle : selectedTodo.title;
+        selectedTodo.description = newDescription ? newDescription : selectedTodo.description;
+        selectedTodo.dueDate = newDueDate ? newDueDate : selectedTodo.dueDate; 
+        selectedTodo.priority = newPriority ? newPriority : selectedTodo.priority; 
     }
 
     return {
         addTodo,
+        removeTodo,
+        editTodo,
     }
 })(projects)
