@@ -1,1 +1,1 @@
-(()=>{const e=document.querySelectorAll(".todo p");console.log(e),e[0].addEventListener("click",(e=>{e.target.classList.toggle(".done")}))})();
+(()=>{!function(){const o=[]}();console.log("I am working Babby!!!!!")})();
