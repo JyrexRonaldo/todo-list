@@ -100,7 +100,7 @@ section:first-child li:hover {
 section div.delete-button {
     margin-left: auto;
     font-size: 1rem;
-    display: none;
+    /* display: none; */
 }
 
 
@@ -129,7 +129,7 @@ section div.delete-button {
 }
 
 form.project {
-    display: flex;
+    display: none;
     flex-direction: column;
     border-radius: 5px;
     border: 1px solid black;

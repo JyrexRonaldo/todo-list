@@ -1,4 +1,4 @@
-let projects = (function() {
+const projects = (function() {
     const _projects = [];
 
     const addProject = () => _projects.push([])
@@ -51,4 +51,64 @@ const todoController = (function(projects) {
     }
 })(projects)
 
-console.log("I am working Babby!!!!!")
+
+
+const screenController = (function(projects) {
+
+    const addProjectForm = document.querySelector('form button:nth-child(2)');
+    const cancelProjectForm = document.querySelector('form button:nth-child(3)');
+    const projectInput = document.querySelector('.project input');
+    const addProjectButton = document.querySelector('.project-list .add');
+    const projectList = document.querySelector('.project-list');
+    const projectForm = document.querySelector('form.project');
+
+    function createProjectNode(name) {
+        const newProjectNode = document.createElement('li');
+        const img = document.createElement('img');
+        img.setAttribute('src', '../src/assets/menu.svg');
+        const deleteButton = document.createElement('div');
+        deleteButton.classList.add('delete-button');
+        deleteButton.textContent = "✖"
+        newProjectNode.append(img, `${name}`, deleteButton)
+        return newProjectNode
+      }
+
+      function appendIndex() {m 
+        // const delete
+        const projects = document.querySelectorAll('.project-list li');
+        for (let i = 0; i < projects.length - 1; i++) {
+            console.log(projects[i])
+            projects[i].setAttribute(`data-index`, `${i}`)
+        }
+
+        console.log(projects)
+
+      }
+
+    //   function addDeleteButton() {
+    //     const deleteButtons = [...document.querySelectorAll('.project-list .delete-button')];
+        
+        
+    //     }
+
+    addProjectForm.addEventListener('click', () => {
+        const newProject = createProjectNode(projectInput.value);
+        // console.log(newProject)
+        projectInput.value = '';
+        projectList.insertBefore(newProject, addProjectButton)
+        projectInput.value = '';
+        projects.addProject();
+        appendIndex()
+        // addDeleteButton();
+    });
+
+    addProjectButton.addEventListener('click', () => {
+        projectForm.style.display = 'flex';
+    });
+
+    cancelProjectForm.addEventListener('click', () => {
+        projectInput.value = '';
+        projectForm.style.display = 'none';
+    });
+
+})(projects) 
