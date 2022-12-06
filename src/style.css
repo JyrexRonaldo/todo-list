@@ -97,7 +97,7 @@ section:first-child li:hover {
     display: flex;
 }
 
-section div.delete-button {
+section img.delete-button {
     margin-left: auto;
     font-size: 1rem;
     /* display: none; */

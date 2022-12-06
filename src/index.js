@@ -69,9 +69,9 @@ const screenController = (function(projects) {
         const newProjectNode = document.createElement('li');
         const img = document.createElement('img');
         img.setAttribute('src', '../src/assets/menu.svg');
-        const deleteButton = document.createElement('div');
+        const deleteButton = document.createElement('img');
         deleteButton.classList.add('delete-button');
-        deleteButton.textContent = "✖"
+        deleteButton.setAttribute('src', '../src/assets/close-icon.svg')
         newProjectNode.append(img, `${name}`, deleteButton)
         return newProjectNode
       }
@@ -83,6 +83,12 @@ const screenController = (function(projects) {
 
       addProjectForm.addEventListener('click', () => {
         projects.addProject(projectInput.value)
+        renderProjectList()
+        addDeleteButton()
+        closeProjectForm()
+      })
+
+      function renderProjectList() {
         let projectCollection = projects.getProjects()
         console.log(projectCollection)
         projectList.innerHTML = "";
@@ -91,8 +97,21 @@ const screenController = (function(projects) {
             let newListNode = createProjectNode(key);
             projectList.insertBefore(newListNode, addProjectButton)
         }
-        closeProjectForm()
-      })
+      }
+
+      function addDeleteButton() {
+        const deleteButtons = document.querySelectorAll('.project-list .delete-button');
+        deleteButtons.forEach(deleteButton => {
+            deleteButton.addEventListener('click', (e) => {
+            projects.removeProject(e.target.parentNode.textContent);
+            renderProjectList();
+            addDeleteButton();
+            })
+        });
+        
+        }
+
+
 
       addProjectButton.addEventListener('click', () => {
         projectForm.style.display = 'flex';
