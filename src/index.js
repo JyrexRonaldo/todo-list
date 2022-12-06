@@ -1,21 +1,22 @@
 const projects = (function() {
-    const _projects = [];
+    const _projects = {};
 
-    const addProject = () => _projects.push([])
+    const addProject = (projectName) => _projects[projectName] = {};
 
     const getProjects = () => _projects;
 
-    const getProject = (index) => _projects[index];
+    const getProject = (projectName) => _projects[projectName];
 
-    const removeProject = (index) => _projects.splice(index, 1);
+    const removeProject = (projectName) => delete _projects[projectName]; 
 
     return {
         addProject,
         getProjects,
         getProject,
-        removeProject
+        removeProject,
     }
 })()
+
 
 const TodoFactory = (title, description, dueDate, priority) => {
     return { title, description, dueDate, priority }
@@ -23,25 +24,29 @@ const TodoFactory = (title, description, dueDate, priority) => {
 
 const todoController = (function(projects) {
 
-    function addTodo(currentProjectIndex, newTitle, newDescription, newDueDate, newPriority) {
+    const addTodo = (currentProjectName, newTitle, newDescription, newDueDate, newPriority) => {
         const newTodo = TodoFactory(newTitle, newDescription, newDueDate, newPriority);
-        projects.getProject(currentProjectIndex).push(newTodo);
+        projects.getProject(currentProjectName)[newTodo.title] = newTodo;
     }
 
-    function removeTodo(currentProjectIndex, currentTodoIndex) {
-        projects.getProject[currentProjectIndex].splice(currentTodoIndex, 1);
+
+    const removeTodo = (currentProjectName, currentTodoName) => {
+        delete projects.getProject(currentProjectName)[currentTodoName];
     }
 
-    function _getTodo(currentProjectIndex, currentTodoIndex) {
-        return projects.getProject[currentProjectIndex][currentTodoIndex];
+    const _getTodo = (currentProjectName, currentTodoName) => {
+        return projects.getProject(currentProjectName)[currentTodoName];
     }
 
-    function editTodo(newTitle, newDescription, newDueDate, newPriority, currentProjectIndex, currentTodoIndex) {
-        const selectedTodo = _getTodo(currentProjectIndex, currentTodoIndex)
+    const editTodo = (newTitle, newDescription, newDueDate, newPriority, currentProjectName, currentTodoName) => {
+        const selectedTodo = _getTodo(currentProjectName, currentTodoName)
         selectedTodo.title = newTitle ? newTitle : selectedTodo.title;
         selectedTodo.description = newDescription ? newDescription : selectedTodo.description;
         selectedTodo.dueDate = newDueDate ? newDueDate : selectedTodo.dueDate; 
-        selectedTodo.priority = newPriority ? newPriority : selectedTodo.priority; 
+        selectedTodo.priority = newPriority ? newPriority : selectedTodo.priority;
+        const project = projects.getProjects()
+        project[currentProjectName][selectedTodo.title] = selectedTodo;
+        delete project[currentProjectName][currentTodoName]
     }
 
     return {
@@ -49,78 +54,9 @@ const todoController = (function(projects) {
         removeTodo,
         editTodo,
     }
-})(projects)
+}
+)(projects)
 
-
-
-const screenController = (function(projects) {
-
-    const addProjectForm = document.querySelector('form button:nth-child(2)');
-    const cancelProjectForm = document.querySelector('form button:nth-child(3)');
-    const projectInput = document.querySelector('.project input');
-    const addProjectButton = document.querySelector('.project-list .add');
-    const projectList = document.querySelector('.project-list');
-    const projectForm = document.querySelector('form.project');
-
-    function createProjectNode(name) {
-        const newProjectNode = document.createElement('li');
-        const img = document.createElement('img');
-        img.setAttribute('src', '../src/assets/menu.svg');
-        const deleteButton = document.createElement('div');
-        deleteButton.classList.add('delete-button');
-        deleteButton.textContent = "✖"
-        newProjectNode.append(img, `${name}`, deleteButton)
-        return newProjectNode
-      }
-
-      function appendIndex() {
-        // const delete
-        const projects = document.querySelectorAll('.project-list li');
-        for (let i = 0; i < projects.length - 1; i++) {
-            console.log(projects[i])
-            projects[i].setAttribute(`data-index`, `${i}`)
-        }
-
-        const deleteButtons = document.querySelectorAll('.project-list .delete-button')
-        for (let i = 0; i < deleteButtons.length; i++) {
-            console.log(deleteButtons[i])
-            deleteButtons[i].setAttribute(`data-index`, `${i}`)
-        }
-
-      }
-
-      function addDeleteButton() {
-        const deleteButtons = document.querySelectorAll('.project-list .delete-button');
-        deleteButtons.forEach(deleteButton => {
-            deleteButton.addEventListener('click', (e) => {
-            const index = e.target.getAttribute("data-index");
-            myLibrary.splice(index, 1);
-            tableBody.removeChild(
-        document.querySelector(`tbody > tr[data-index="${index}"]`)
-      );
-            })
-        });
-        
-        }
-
-    addProjectForm.addEventListener('click', () => {
-        const newProjectName = createProjectNode(projectInput.value);
-        // console.log(newProjectName)
-        projectInput.value = '';
-        projectList.insertBefore(newProjectName, addProjectButton)
-        projectInput.value = '';
-        projects.addProject();
-        appendIndex()
-        // addDeleteButton();
-    });
-
-    addProjectButton.addEventListener('click', () => {
-        projectForm.style.display = 'flex';
-    });
-
-    cancelProjectForm.addEventListener('click', () => {
-        projectInput.value = '';
-        projectForm.style.display = 'none';
-    });
-
-})(projects) 
+const screenController = (function() {
+    
+})()
