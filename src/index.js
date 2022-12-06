@@ -57,6 +57,49 @@ const todoController = (function(projects) {
 }
 )(projects)
 
-const screenController = (function() {
-    
-})()
+const screenController = (function(projects) {
+    const addProjectForm = document.querySelector('form button:nth-child(2)');
+    const cancelProjectForm = document.querySelector('form button:nth-child(3)');
+    const projectInput = document.querySelector('.project input');
+    const addProjectButton = document.querySelector('.project-list .add');
+    const projectList = document.querySelector('.project-list');
+    const projectForm = document.querySelector('form.project');
+
+    function createProjectNode(name) {
+        const newProjectNode = document.createElement('li');
+        const img = document.createElement('img');
+        img.setAttribute('src', '../src/assets/menu.svg');
+        const deleteButton = document.createElement('div');
+        deleteButton.classList.add('delete-button');
+        deleteButton.textContent = "✖"
+        newProjectNode.append(img, `${name}`, deleteButton)
+        return newProjectNode
+      }
+
+      function closeProjectForm() {
+        projectInput.value = '';
+        projectForm.style.display = 'none';
+      }
+
+      addProjectForm.addEventListener('click', () => {
+        projects.addProject(projectInput.value)
+        let projectCollection = projects.getProjects()
+        console.log(projectCollection)
+        projectList.innerHTML = "";
+        projectList.appendChild(addProjectButton)
+        for (const key in projectCollection) {
+            let newListNode = createProjectNode(key);
+            projectList.insertBefore(newListNode, addProjectButton)
+        }
+        closeProjectForm()
+      })
+
+      addProjectButton.addEventListener('click', () => {
+        projectForm.style.display = 'flex';
+    });
+
+    cancelProjectForm.addEventListener('click', () => {
+        closeProjectForm();
+    });
+
+})(projects)
