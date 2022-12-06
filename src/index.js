@@ -73,7 +73,7 @@ const screenController = (function(projects) {
         return newProjectNode
       }
 
-      function appendIndex() {m 
+      function appendIndex() {
         // const delete
         const projects = document.querySelectorAll('.project-list li');
         for (let i = 0; i < projects.length - 1; i++) {
@@ -81,21 +81,33 @@ const screenController = (function(projects) {
             projects[i].setAttribute(`data-index`, `${i}`)
         }
 
-        console.log(projects)
+        const deleteButtons = document.querySelectorAll('.project-list .delete-button')
+        for (let i = 0; i < deleteButtons.length; i++) {
+            console.log(deleteButtons[i])
+            deleteButtons[i].setAttribute(`data-index`, `${i}`)
+        }
 
       }
 
-    //   function addDeleteButton() {
-    //     const deleteButtons = [...document.querySelectorAll('.project-list .delete-button')];
+      function addDeleteButton() {
+        const deleteButtons = document.querySelectorAll('.project-list .delete-button');
+        deleteButtons.forEach(deleteButton => {
+            deleteButton.addEventListener('click', (e) => {
+            const index = e.target.getAttribute("data-index");
+            myLibrary.splice(index, 1);
+            tableBody.removeChild(
+        document.querySelector(`tbody > tr[data-index="${index}"]`)
+      );
+            })
+        });
         
-        
-    //     }
+        }
 
     addProjectForm.addEventListener('click', () => {
-        const newProject = createProjectNode(projectInput.value);
-        // console.log(newProject)
+        const newProjectName = createProjectNode(projectInput.value);
+        // console.log(newProjectName)
         projectInput.value = '';
-        projectList.insertBefore(newProject, addProjectButton)
+        projectList.insertBefore(newProjectName, addProjectButton)
         projectInput.value = '';
         projects.addProject();
         appendIndex()
