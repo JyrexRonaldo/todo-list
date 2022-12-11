@@ -120,10 +120,6 @@ section img.delete-button {
     text-decoration: line-through;
 }
 
- section:nth-child(2) li::before {
-  content: "● ";
-}
-
 .todo .add::before, .add::before {
     content: "✚ ";
 }
@@ -154,4 +150,47 @@ form.todo {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+}
+
+svg {
+    width: 25px;
+    height: auto;
+    margin-left: auto;
+}
+
+section:nth-child(2) .delete-button {
+    margin-left: 0px;
+}
+
+.todo li {
+    /* text-decoration: line-through; */
+    display: flex;
+    /* justify-content: space-between; */
+    gap: 20px;
+}
+
+.todo p {
+    text-decoration: line-through;
+}
+
+[type=checkbox] {
+    appearance: none;
+    border: 2px solid black;
+    width: 25PX;
+    height: 25px;
+    border-radius: 50%;
+}
+
+[type=checkbox]:checked::before {
+    content: "✔";
+    font-size: 19px;
+    position: relative;
+    right: -3px;
+    /* background-color: green; */
+}
+
+.todo button {
+    border: 0.1px solid black;
+    background-color: #EEEEEE;
+    margin-left: auto;
 }

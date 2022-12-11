@@ -57,6 +57,42 @@ const todoController = (function(projects) {
 }
 )(projects)
 
+console.log(projects.getProjects());
+
+projects.addProject('make money');
+
+console.log(projects.getProjects());
+
+todoController.addTodo('make money', 'buy cows', 'so i can sell', 'now!', true)
+
+todoController.addTodo('make money', 'buy stocks', 'so i can profit', 'alse now!', true)
+
+console.log(projects.getProjects());
+
+const makeMoney = projects.getProject('make money')
+
+for (const key in makeMoney) {
+    console.log(makeMoney[key].description)
+}
+
+console.log(makeMoney)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const screenController = (function(projects) {
     const addProjectForm = document.querySelector('form button:nth-child(2)');
     const cancelProjectForm = document.querySelector('form button:nth-child(3)');
@@ -64,6 +100,13 @@ const screenController = (function(projects) {
     const addProjectButton = document.querySelector('.project-list .add');
     const projectList = document.querySelector('.project-list');
     const projectForm = document.querySelector('form.project');
+    // let listCollecttion = document.querySelectorAll('li');
+
+    // function updateListCollection() {
+    //    const listCollecttion = document.querySelectorAll('li:not(.add)');
+    //    console.log(listCollecttion)
+    // }
+    getSelectedProject()
 
     function createProjectNode(name) {
         const newProjectNode = document.createElement('li');
@@ -71,9 +114,33 @@ const screenController = (function(projects) {
         img.setAttribute('src', '../src/assets/menu.svg');
         const deleteButton = document.createElement('img');
         deleteButton.classList.add('delete-button');
-        deleteButton.setAttribute('src', '../src/assets/close-icon.svg')
+        deleteButton.setAttribute('src', '../src/assets/delete-icon.svg')
         newProjectNode.append(img, `${name}`, deleteButton)
         return newProjectNode
+      }
+
+    //   function getSelectedProject() {
+    //     const listCollecttion = document.querySelectorAll('section:first-child li:not(.add)');
+    //     listCollecttion.forEach(listItem => {
+    //         listItem.addEventListener('click', (e) => {
+    //             return e.target.textContent;
+    //         })
+    //     });
+    //   }
+
+      function getSelectedProject() {
+        const listCollecttion = document.querySelectorAll('section:first-child li:not(.add)');
+        listCollecttion.forEach(listItem => {
+            listItem.addEventListener('click', (e) => {
+                let allProjectList = document.querySelectorAll('section:first-child li:not(.add)');
+                for (let i = 0; i < allProjectList.length; i++) {
+                    allProjectList[i].classList.remove('selected') 
+                }
+                e.target.classList.add('selected')
+                console.log(e.target.textContent)
+                
+            })
+        });
       }
 
       function closeProjectForm() {
@@ -84,8 +151,14 @@ const screenController = (function(projects) {
       addProjectForm.addEventListener('click', () => {
         projects.addProject(projectInput.value)
         renderProjectList()
+        getSelectedProject()
         addDeleteButton()
         closeProjectForm()
+    // updateListCollection()
+        // listCollecttion = document.querySelectorAll('li:not(.add)');
+        // console.log(listCollecttion)
+        // const activeList = document.querySelectorAll('li:not(.add)');
+        // console.log(activeList)
       })
 
       function renderProjectList() {
@@ -107,11 +180,8 @@ const screenController = (function(projects) {
             renderProjectList();
             addDeleteButton();
             })
-        });
-        
+        });        
         }
-
-
 
       addProjectButton.addEventListener('click', () => {
         projectForm.style.display = 'flex';
@@ -121,4 +191,7 @@ const screenController = (function(projects) {
         closeProjectForm();
     });
 
+    
+
 })(projects)
+
