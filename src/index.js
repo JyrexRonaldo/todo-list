@@ -1,13 +1,13 @@
 const projects = (function() {
     const _projects = {};
 
-    const addProject = (projectName) => _projects[projectName] = {};
+    const addProject = (selectedProject) => _projects[selectedProject] = {};
 
     const getProjects = () => _projects;
 
-    const getProject = (projectName) => _projects[projectName];
+    const getProject = (selectedProject) => _projects[selectedProject];
 
-    const removeProject = (projectName) => delete _projects[projectName]; 
+    const removeProject = (selectedProject) => delete _projects[selectedProject]; 
 
     return {
         addProject,
@@ -53,6 +53,7 @@ const todoController = (function(projects) {
         addTodo,
         removeTodo,
         editTodo,
+        _getTodo,
     }
 }
 )(projects)
@@ -100,6 +101,12 @@ const screenController = (function(projects) {
     const addProjectButton = document.querySelector('.project-list .add');
     const projectList = document.querySelector('.project-list');
     const projectForm = document.querySelector('form.project');
+    const addTaskButton = document.querySelector('.todo .add');
+    const todoList = document.querySelector('.todo');
+    const formContainer = document.querySelector('.form');
+    const cancelTaskForm = document.querySelector('.form button:nth-child(2)');
+    // const addTaskForm = documen
+
     // let listCollecttion = document.querySelectorAll('li');
 
     // function updateListCollection() {
@@ -119,6 +126,35 @@ const screenController = (function(projects) {
         return newProjectNode
       }
 
+     function createTodoNode(todo) {
+        const newTodoNode = document.createElement('li');
+        const todoCheck = document.createElement('input');
+        const todoTitle = document.createElement('p');
+        const detailsButton = document.createElement('button');
+        const dateSpan = document.createElement('span');
+        const editIcon = document.createElement('img');
+        const deleteIcon = document.createElement('img');
+        
+        todoCheck.setAttribute('type', 'checkbox');
+        todoTitle.textContent = todo.title;
+        detailsButton.textContent = 'DETAILS';
+        dateSpan.textContent = todo.dueDate;
+        editIcon.setAttribute('src', '../src/assets/edit-icon.svg');
+        editIcon.classList.add('edit-button');
+        deleteIcon.setAttribute('src', '../src/assets/delete-icon.svg');
+        deleteIcon.classList.add('delete-button');
+        newTodoNode.append(todoCheck, todoTitle, detailsButton, dateSpan, editIcon, deleteIcon);
+        return newTodoNode;
+     } 
+// 
+     createTodoNode(todoController._getTodo('make money', 'buy stocks'))
+  
+    //  addTaskButton.addEventListener('click', () => [
+    //     todoList.insertBefore(createTodoNode(todoController._getTodo('make money', 'buy stocks')),addTaskButton )
+    //  ]);
+
+
+
     //   function getSelectedProject() {
     //     const listCollecttion = document.querySelectorAll('section:first-child li:not(.add)');
     //     listCollecttion.forEach(listItem => {
@@ -137,7 +173,7 @@ const screenController = (function(projects) {
                     allProjectList[i].classList.remove('selected') 
                 }
                 e.target.classList.add('selected')
-                console.log(e.target.textContent)
+                renderTodoList(e.target.textContent)
                 
             })
         });
@@ -167,9 +203,24 @@ const screenController = (function(projects) {
         projectList.innerHTML = "";
         projectList.appendChild(addProjectButton)
         for (const key in projectCollection) {
-            let newListNode = createProjectNode(key);
-            projectList.insertBefore(newListNode, addProjectButton)
+            let newProjectNode = createProjectNode(key);
+            projectList.insertBefore(newProjectNode, addProjectButton)
         }
+      }
+
+      function renderTodoList(selectedProject) {
+        const todoListTitle = document.querySelector('.content.title');
+        let todoCollection = projects.getProject(selectedProject);
+        console.log(todoCollection);
+        todoList.innerHTML = "";
+        todoListTitle.textContent = selectedProject;
+        todoList.appendChild(addTaskButton);
+        for (const key in todoCollection) {
+            console.log(key)
+            let newTodoNode = createTodoNode(todoCollection[key]);
+            todoList.insertBefore(newTodoNode, addTaskButton)
+        }
+
       }
 
       function addDeleteButton() {
@@ -183,6 +234,8 @@ const screenController = (function(projects) {
         });        
         }
 
+
+
       addProjectButton.addEventListener('click', () => {
         projectForm.style.display = 'flex';
     });
@@ -191,7 +244,14 @@ const screenController = (function(projects) {
         closeProjectForm();
     });
 
-    
+    addTaskButton.addEventListener('click', () => {
+        formContainer.style.display = 'flex'
+    });
+
+    cancelTaskForm.addEventListener('click', () => {
+        formContainer.style.display = 'none'
+    })
+
 
 })(projects)
 
