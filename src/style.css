@@ -170,7 +170,7 @@ section:nth-child(2) .delete-button {
 }
 
 .todo p {
-    text-decoration: line-through;
+    /* text-decoration: line-through; */
 }
 
 [type=checkbox] {

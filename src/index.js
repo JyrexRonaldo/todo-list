@@ -94,7 +94,7 @@ console.log(makeMoney)
 
 
 
-const screenController = (function(projects) {
+const screenController = (function(projects, todoController) {
     const addProjectForm = document.querySelector('form button:nth-child(2)');
     const cancelProjectForm = document.querySelector('form button:nth-child(3)');
     const projectInput = document.querySelector('.project input');
@@ -104,7 +104,12 @@ const screenController = (function(projects) {
     const addTaskButton = document.querySelector('.todo .add');
     const todoList = document.querySelector('.todo');
     const formContainer = document.querySelector('.form');
+    const addTaskForm = document.querySelector('.form button:first-child');
     const cancelTaskForm = document.querySelector('.form button:nth-child(2)');
+    const taskTitle = document.querySelector('#title');
+    const taskDescription = document.querySelector('#description');
+    const taskDuedate = document.querySelector('#due-date');
+    const taskPriority = document.querySelector('#priority');
     // const addTaskForm = documen
 
     // let listCollecttion = document.querySelectorAll('li');
@@ -249,9 +254,27 @@ const screenController = (function(projects) {
     });
 
     cancelTaskForm.addEventListener('click', () => {
-        formContainer.style.display = 'none'
+        formContainer.style.display = 'none';
     })
 
+    addTaskForm.addEventListener('click', (e) => {
+        const currentProjectName = document.querySelector('.content.title').textContent;
+        todoController.addTodo(currentProjectName, taskTitle.value, taskDescription.value, taskDuedate.value, taskPriority.value);
+        renderTodoList(currentProjectName);
+        e.target.style.backgroundColor = 'blue'
+        console.log('i was clicked')
+        closeTaskForm()
+    })
 
-})(projects)
+    function closeTaskForm() {
+        taskTitle.value = ''; 
+        taskDescription.value = ''; 
+        taskDuedate.value = ''; 
+        taskPriority.value = false;
+        taskPriority.checked = false;
+        formContainer.style.display = 'none';
+    }
+
+
+})(projects, todoController)
 
