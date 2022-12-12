@@ -53,46 +53,9 @@ const todoController = (function(projects) {
         addTodo,
         removeTodo,
         editTodo,
-        _getTodo,
     }
 }
 )(projects)
-
-console.log(projects.getProjects());
-
-projects.addProject('make money');
-
-console.log(projects.getProjects());
-
-todoController.addTodo('make money', 'buy cows', 'so i can sell', 'now!', true)
-
-todoController.addTodo('make money', 'buy stocks', 'so i can profit', 'alse now!', true)
-
-console.log(projects.getProjects());
-
-const makeMoney = projects.getProject('make money')
-
-for (const key in makeMoney) {
-    console.log(makeMoney[key].description)
-}
-
-console.log(makeMoney)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const screenController = (function(projects, todoController) {
     const addProjectForm = document.querySelector('form button:nth-child(2)');
@@ -110,14 +73,6 @@ const screenController = (function(projects, todoController) {
     const taskDescription = document.querySelector('#description');
     const taskDuedate = document.querySelector('#due-date');
     const taskPriority = document.querySelector('#priority');
-    // const addTaskForm = documen
-
-    // let listCollecttion = document.querySelectorAll('li');
-
-    // function updateListCollection() {
-    //    const listCollecttion = document.querySelectorAll('li:not(.add)');
-    //    console.log(listCollecttion)
-    // }
     getSelectedProject()
 
     function createProjectNode(name) {
@@ -151,24 +106,7 @@ const screenController = (function(projects, todoController) {
         newTodoNode.append(todoCheck, todoTitle, detailsButton, dateSpan, editIcon, deleteIcon);
         return newTodoNode;
      } 
-// 
-     createTodoNode(todoController._getTodo('make money', 'buy stocks'))
   
-    //  addTaskButton.addEventListener('click', () => [
-    //     todoList.insertBefore(createTodoNode(todoController._getTodo('make money', 'buy stocks')),addTaskButton )
-    //  ]);
-
-
-
-    //   function getSelectedProject() {
-    //     const listCollecttion = document.querySelectorAll('section:first-child li:not(.add)');
-    //     listCollecttion.forEach(listItem => {
-    //         listItem.addEventListener('click', (e) => {
-    //             return e.target.textContent;
-    //         })
-    //     });
-    //   }
-
       function getSelectedProject() {
         const listCollecttion = document.querySelectorAll('section:first-child li:not(.add)');
         listCollecttion.forEach(listItem => {
@@ -195,16 +133,10 @@ const screenController = (function(projects, todoController) {
         getSelectedProject()
         addDeleteButton()
         closeProjectForm()
-    // updateListCollection()
-        // listCollecttion = document.querySelectorAll('li:not(.add)');
-        // console.log(listCollecttion)
-        // const activeList = document.querySelectorAll('li:not(.add)');
-        // console.log(activeList)
       })
 
       function renderProjectList() {
         let projectCollection = projects.getProjects()
-        console.log(projectCollection)
         projectList.innerHTML = "";
         projectList.appendChild(addProjectButton)
         for (const key in projectCollection) {
@@ -216,12 +148,10 @@ const screenController = (function(projects, todoController) {
       function renderTodoList(selectedProject) {
         const todoListTitle = document.querySelector('.content.title');
         let todoCollection = projects.getProject(selectedProject);
-        console.log(todoCollection);
         todoList.innerHTML = "";
         todoListTitle.textContent = selectedProject;
         todoList.appendChild(addTaskButton);
         for (const key in todoCollection) {
-            console.log(key)
             let newTodoNode = createTodoNode(todoCollection[key]);
             todoList.insertBefore(newTodoNode, addTaskButton)
         }
@@ -261,8 +191,6 @@ const screenController = (function(projects, todoController) {
         const currentProjectName = document.querySelector('.content.title').textContent;
         todoController.addTodo(currentProjectName, taskTitle.value, taskDescription.value, taskDuedate.value, taskPriority.value);
         renderTodoList(currentProjectName);
-        e.target.style.backgroundColor = 'blue'
-        console.log('i was clicked')
         closeTaskForm()
     })
 
