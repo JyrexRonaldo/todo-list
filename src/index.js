@@ -1,5 +1,5 @@
 const TaskFactory = (title, description, dueDate, priority, status) => {
-    status = 'off';
+    // status = 'incomplete';
     return { title, description, dueDate, priority, status }
 }
 
@@ -37,7 +37,42 @@ const projects = (function() {
     const removeTask = (currentProjectIndex, currentTaskIndex) => {
         getProject(currentProjectIndex).splice(currentTaskIndex, 1)
     }
+
+    const getAlltask = () => {
+        const allProjects = getProjects()
+        let allTask = []
+        for (let i = 0; i < allProjects.length; i++) {
+            for (let j = 0; j < allProjects[i].length; j++) {
+                allTask.push(allProjects[i][j])                
+            }  
+        }
+        return allTask
+    }
     
+    const getImportantTask = () => {
+        let allTask = getAlltask();
+
+        let importantTask = allTask.filter((task) => {
+            if (task.priority === 'yes') {
+                return task
+            }
+        })
+
+        return importantTask
+    }
+
+    const getCompletedTask = () => {
+        let allTask = getAlltask();
+
+        let completedTask = allTask.filter((task) => {
+            if (task.status === 'complete') {
+                return task
+            }
+        })
+
+        return completedTask;
+    }
+
     return {
         addProject,
         getProjects,
@@ -47,6 +82,9 @@ const projects = (function() {
         editTask,
         removeTask,
         getTask,
+        getAlltask,
+        getImportantTask,
+        getCompletedTask,
     }
 })()
 
@@ -59,21 +97,38 @@ projects.addProject()
 projects.addProject()
 
 
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo')
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo')
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo')
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo')
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo')
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo')
+projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+
+
+projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+
+
+projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+
 
 projects.editTask(1, 3, 'makevids', 'so i can sell', 'tuesday', 'yes')
 
-projects.removeTask(1, 3)
+// projects.removeTask(1, 3)
 
 // projects.removeProject()
 
 console.log(tosk)
-console.log(projects.getProjects())
+console.log(projects.getCompletedTask())
 
 
 
@@ -159,7 +214,7 @@ const screenController = (function(projects) {
         deleteIcon.setAttribute('src', '../src/assets/delete-icon.svg');
         deleteIcon.classList.add('delete-button');
         newTaskNode.append(taskCheck, taskTitle, detailsButton, dateSpan, editIcon, deleteIcon);
-        if (task.status === 'on') {
+        if (task.status === 'complete') {
             taskTitle.classList.add('completed');
             taskCheck.checked = true;
         }
@@ -271,10 +326,10 @@ const screenController = (function(projects) {
                 checkButton.addEventListener('change', (e) => {
                     let task = projects.getTask(currentDisplayIndex, e.target.dataset.index);
                     if (checkButton.checked === true) {
-                        task.status = 'on';
+                        task.status = 'complete';
                         checkButton.nextSibling.classList.add('completed');     
                     } else if (checkButton.checked === false) {
-                        task.status = 'off';
+                        task.status = 'incomplete';
                         checkButton.nextSibling.classList.remove('completed')
                     }
 
