@@ -65,8 +65,11 @@
                             <input type="date" id="due-date">
                         </p>
                         <p>
-                            <input type="checkbox" name="priority" id="priority" value="true" >
-                            <label for="priority">This is important</label>
+                            <label for="priority">Is this important?</label>
+                            <select name="priority" id="priority">
+                                <option value="no">Not important at all..</option>
+                                <option value="yes">Super important!</option>
+                            </select>
                         </p>
                         <p>
                             <button type="button">Add</button>

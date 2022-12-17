@@ -122,6 +122,7 @@ const screenController = (function(projects) {
     
     
     addTaskButton.addEventListener('click', (e) => {
+        taskPriority.checked = false;
         addTaskForm.textContent = 'Add';
         formContainer.style.display = 'flex';
         taskFormPurpose = 'add';
@@ -227,7 +228,7 @@ const screenController = (function(projects) {
                     taskDescription.value = editTask.description;
                     taskDuedate.value = editTask.dueDate;
                     taskPriority.value = editTask.priority;
-                    console.log(editTask.priority);
+                    console.log(taskPriority.checked);
                     addTaskForm.textContent = 'Edit';
                     formContainer.style.display = 'flex';
                     taskFormPurpose = 'edit';
@@ -290,11 +291,12 @@ const screenController = (function(projects) {
 
 
         function closeTaskForm() {
+            // console.log()
             taskTitle.value = ''; 
             taskDescription.value = ''; 
             taskDuedate.value = ''; 
-            taskPriority.value = false;
-            taskPriority.checked = false;
+            // taskPriority.value = false;
+            // taskPriority.checked = false;
             formContainer.style.display = 'none';
         }
 })(projects)

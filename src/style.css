@@ -232,27 +232,31 @@ form div:nth-child(2) {
 }
 
 
-form p:nth-child(1), form p:nth-child(2), form p:nth-child(3) {
+form p:nth-child(1), form p:nth-child(2), form p:nth-child(3), form p:nth-child(4) {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
 }
 
-form p [type=text], textarea, [type=date] {
+form p [type=text], textarea, [type=date], select {
     width: 407px;
     padding: 5px;
     font-size: 18px;
 }
 
-[type=text], [type=date] {
+[type=text], [type=date], select {
     height: 40px;
 }
 
-form p:nth-child(4) {
+select {
+    width: 100%;
+}
+
+/* form p:nth-child(4) {
     display: flex;
     align-items: center;
-}
+} */
 
 form p:nth-child(5) {
     height: 50px;
