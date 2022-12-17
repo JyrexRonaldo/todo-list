@@ -21,12 +21,12 @@ const projects = (function() {
         getProject(currentProjectIndex).push(newTask);
     }
 
-    const _getTask = (currentProjectIndex, currentTaskIndex) => {
+    const getTask = (currentProjectIndex, currentTaskIndex) => {
         return getProject(currentProjectIndex)[currentTaskIndex];
     }
 
     const editTask = (currentProjectIndex, currentTaskIndex, newTitle , newDescription, newDueDate, newPriority, status) => {
-        const selectedTask = _getTask(currentProjectIndex, currentTaskIndex)
+        const selectedTask = getTask(currentProjectIndex, currentTaskIndex)
         selectedTask.title = newTitle ? newTitle : selectedTask.title;
         selectedTask.description = newDescription ? newDescription : selectedTask.description;
         selectedTask.dueDate = newDueDate ? newDueDate : selectedTask.dueDate; 
@@ -46,6 +46,7 @@ const projects = (function() {
         addTask,
         editTask,
         removeTask,
+        getTask,
     }
 })()
 
@@ -96,12 +97,24 @@ const screenController = (function(projects) {
     const projectListNames = [];
     let currentDisplayIndex = null;
     getSelectedProject();
+    let taskFormPurpose = null;
+    let modifyTaskItem = null;
 
 
     addTaskForm.addEventListener('click', (e) => {
-        projects.addTask(currentDisplayIndex, taskTitle.value, taskDescription.value, taskDuedate.value, taskPriority.value)
+
+        if (taskFormPurpose === 'add') {
+            projects.addTask(currentDisplayIndex, taskTitle.value, taskDescription.value, taskDuedate.value, taskPriority.value);
+            taskFormPurpose = null;
+        } else if (taskFormPurpose === 'edit') {
+            projects.editTask(currentDisplayIndex, modifyTaskItem, taskTitle.value, taskDescription.value, taskDuedate.value, taskPriority.value)
+            taskFormPurpose = null;
+            modifyTaskItem = null;
+        }
+
         renderTaskList(currentDisplayIndex);
         addDeleteTaskButton()
+        addEditButton()
         closeTaskForm()
     })
 
@@ -109,7 +122,9 @@ const screenController = (function(projects) {
     
     
     addTaskButton.addEventListener('click', (e) => {
+        addTaskForm.textContent = 'Add';
         formContainer.style.display = 'flex';
+        taskFormPurpose = 'add';
     });
 
     cancelTaskForm.addEventListener('click', () => {
@@ -137,7 +152,7 @@ const screenController = (function(projects) {
         const deleteIcon = document.createElement('img');
         
         taskCheck.setAttribute('type', 'checkbox');
-        taskTitle.textContent = task;
+        taskTitle.textContent = task.title;
         detailsButton.textContent = 'DETAILS';
         dateSpan.textContent = task.dueDate;
         editIcon.setAttribute('src', '../src/assets/edit-icon.svg');
@@ -153,7 +168,7 @@ const screenController = (function(projects) {
         let taskCollection = []
 
         for (let i = 0; i < projects.getProject(selectedProject).length; i++) {
-            taskCollection.push(projects.getProject(selectedProject)[i].title)
+            taskCollection.push(projects.getProject(selectedProject)[i])
         }
 
          console.log(taskCollection)
@@ -188,7 +203,7 @@ const screenController = (function(projects) {
       function addDeleteProjectButton() {
         const deleteButtons = document.querySelectorAll('.project-list .delete-button');
         deleteButtons.forEach((deleteButton, index) => {
-            deleteButton.dataset.index = index
+            deleteButton.dataset.index = index;
             deleteButton.addEventListener('click', (e) => {
             projects.removeProject(e.target.dataset.index);
             projectListNames.splice(e.target.dataset.index, 1)
@@ -198,6 +213,27 @@ const screenController = (function(projects) {
             getSelectedProject()
             })
         });        
+        }
+
+        function addEditButton() {
+            const editButtons = document.querySelectorAll('.task .edit-button');
+            console.log(editButtons)
+
+            editButtons.forEach((editButton, index) => {
+                editButton.dataset.index = index;
+                editButton.addEventListener('click', (e) => {
+                    let editTask = projects.getTask(currentDisplayIndex, e.target.dataset.index)
+                    taskTitle.value = editTask.title;
+                    taskDescription.value = editTask.description;
+                    taskDuedate.value = editTask.dueDate;
+                    taskPriority.value = editTask.priority;
+                    console.log(editTask.priority);
+                    addTaskForm.textContent = 'Edit';
+                    formContainer.style.display = 'flex';
+                    taskFormPurpose = 'edit';
+                    modifyTaskItem = e.target.dataset.index;
+                })
+            })
         }
 
       function renderProjectList() {
@@ -224,6 +260,7 @@ const screenController = (function(projects) {
                 renderTaskList(e.target.dataset.index)
                 currentDisplayIndex = e.target.dataset.index;
                 addDeleteTaskButton()
+                addEditButton()
             })
         });
       }
