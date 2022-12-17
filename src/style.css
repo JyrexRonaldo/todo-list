@@ -89,7 +89,7 @@ section:first-child li:hover {
     font-size: 2.8rem;
 }
 
-.todo li {
+.task li {
     font-size: 1rem;
     cursor: pointer;
     flex: 1 1 100%;
@@ -105,7 +105,7 @@ section img.delete-button {
 
 
 
-.todo li:hover {
+.task li:hover {
     background-color: #CCCCCC;
 }
 
@@ -120,7 +120,7 @@ section img.delete-button {
     text-decoration: line-through;
 }
 
-.todo .add::before, .add::before {
+.task .add::before, .add::before {
     content: "✚ ";
 }
 
@@ -141,7 +141,7 @@ form.project {
     font-size: large;
 }
 
-form.todo {
+form.task {
     width: 500px;
     border: 1px solid black;
     border-radius: 5px;
@@ -162,14 +162,14 @@ section:nth-child(2) .delete-button {
     margin-left: 0px;
 }
 
-.todo li {
+.task li {
     /* text-decoration: line-through; */
     display: flex;
     /* justify-content: space-between; */
     gap: 20px;
 }
 
-.todo p {
+.task p {
     /* text-decoration: line-through; */
 }
 
@@ -191,7 +191,7 @@ section:nth-child(2) .delete-button {
     /* background-color: green; */
 }
 
-.todo button {
+.task button {
     border: 0.1px solid black;
     background-color: #EEEEEE;
     margin-left: auto;
