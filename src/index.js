@@ -102,7 +102,6 @@ const screenController = (function(projects) {
 
 
     addTaskForm.addEventListener('click', (e) => {
-
         if (taskFormPurpose === 'add') {
             projects.addTask(currentDisplayIndex, taskTitle.value, taskDescription.value, taskDuedate.value, taskPriority.value);
             taskFormPurpose = null;
@@ -111,18 +110,16 @@ const screenController = (function(projects) {
             taskFormPurpose = null;
             modifyTaskItem = null;
         }
-
         renderTaskList(currentDisplayIndex);
         addDeleteTaskButton()
         addEditButton()
+        addDetailButton()
+        addCheckButton()
         closeTaskForm()
     })
 
-
-    
-    
     addTaskButton.addEventListener('click', (e) => {
-        taskPriority.checked = false;
+        taskPriority.value = 'no';
         addTaskForm.textContent = 'Add';
         formContainer.style.display = 'flex';
         taskFormPurpose = 'add';
@@ -130,6 +127,7 @@ const screenController = (function(projects) {
 
     cancelTaskForm.addEventListener('click', () => {
         closeTaskForm()
+        returnDefault()
     })
     
     function createProjectNode(name) {
@@ -161,6 +159,10 @@ const screenController = (function(projects) {
         deleteIcon.setAttribute('src', '../src/assets/delete-icon.svg');
         deleteIcon.classList.add('delete-button');
         newTaskNode.append(taskCheck, taskTitle, detailsButton, dateSpan, editIcon, deleteIcon);
+        if (task.status === 'on') {
+            taskTitle.classList.add('completed');
+            taskCheck.checked = true;
+        }
         return newTaskNode;
      }
 
@@ -196,6 +198,9 @@ const screenController = (function(projects) {
                 projects.removeTask(currentDisplayIndex, e.target.dataset.index)
                 renderTaskList(currentDisplayIndex);
                 addDeleteTaskButton()
+                addEditButton()
+                addDetailButton()
+                addCheckButton()
             })
         })
       }
@@ -228,13 +233,61 @@ const screenController = (function(projects) {
                     taskDescription.value = editTask.description;
                     taskDuedate.value = editTask.dueDate;
                     taskPriority.value = editTask.priority;
-                    console.log(taskPriority.checked);
                     addTaskForm.textContent = 'Edit';
                     formContainer.style.display = 'flex';
                     taskFormPurpose = 'edit';
                     modifyTaskItem = e.target.dataset.index;
                 })
             })
+        }
+
+        function addDetailButton() {
+            const detailButtons = document.querySelectorAll('.task button');
+
+            detailButtons.forEach((detailButton, index) => {
+                detailButton.dataset.index = index;
+                detailButton.addEventListener('click', (e) => {
+                    let task = projects.getTask(currentDisplayIndex, e.target.dataset.index);
+                    taskTitle.value = task.title;
+                    taskDescription.value = task.description;
+                    taskDuedate.value = task.dueDate;
+                    taskPriority.value = task.priority;
+                    taskTitle.disabled = true;
+                    taskDescription.disabled = true;
+                    taskDuedate.disabled = true;
+                    taskPriority.disabled = true;
+                    addTaskForm.style.display = 'none';
+                    formContainer.style.display = 'flex';
+                }) 
+            })
+
+        }
+
+        function addCheckButton() {
+            const checkButtons = document.querySelectorAll('.task [type=checkbox]')
+
+            checkButtons.forEach((checkButton, index) => {
+                checkButton.dataset.index = index;
+                checkButton.addEventListener('change', (e) => {
+                    let task = projects.getTask(currentDisplayIndex, e.target.dataset.index);
+                    if (checkButton.checked === true) {
+                        task.status = 'on';
+                        checkButton.nextSibling.classList.add('completed');     
+                    } else if (checkButton.checked === false) {
+                        task.status = 'off';
+                        checkButton.nextSibling.classList.remove('completed')
+                    }
+
+                })
+            })
+        }
+        
+        function returnDefault() {
+            taskTitle.disabled = false;
+            taskDescription.disabled = false;
+            taskDuedate.disabled = false;
+            taskPriority.disabled = false;
+            addTaskForm.style.display = 'block';
         }
 
       function renderProjectList() {
@@ -262,6 +315,8 @@ const screenController = (function(projects) {
                 currentDisplayIndex = e.target.dataset.index;
                 addDeleteTaskButton()
                 addEditButton()
+                addDetailButton()
+                addCheckButton()
             })
         });
       }
@@ -291,12 +346,9 @@ const screenController = (function(projects) {
 
 
         function closeTaskForm() {
-            // console.log()
             taskTitle.value = ''; 
             taskDescription.value = ''; 
             taskDuedate.value = ''; 
-            // taskPriority.value = false;
-            // taskPriority.checked = false;
             formContainer.style.display = 'none';
         }
 })(projects)
