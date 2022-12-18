@@ -1,3 +1,12 @@
+import { isToday, format } from 'date-fns'
+
+// // console.log('big ass is bae')
+// // If today is 6 October 2014, is 6 October 14:00:00 today?
+// const result = format(new Date(2022, 11, 15), "do MMM")
+
+// console.log(result)
+// //=> true
+
 const TaskFactory = (title, description, dueDate, priority, status) => {
     // status = 'incomplete';
     return { title, description, dueDate, priority, status }
@@ -89,46 +98,46 @@ const projects = (function() {
 })()
 
 
-let tosk = TaskFactory('james', 'sadasd', '007', 'noooo' )
+// let tosk = TaskFactory('james', 'sadasd', '007', 'noooo' )
 
 
-projects.addProject()
-projects.addProject()
-projects.addProject()
+// projects.addProject()
+// projects.addProject()
+// projects.addProject()
 
 
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
-projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
 
 
-projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
-projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
-projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
-projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
-projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
-projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
 
 
-projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
-projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
-projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
-projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
-projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
-projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
 
 
-projects.editTask(1, 3, 'makevids', 'so i can sell', 'tuesday', 'yes')
+// projects.editTask(1, 3, 'makevids', 'so i can sell', 'tuesday', 'yes')
 
-// projects.removeTask(1, 3)
+// // projects.removeTask(1, 3)
 
-// projects.removeProject()
+// // projects.removeProject()
 
-console.log(tosk)
-console.log(projects.getCompletedTask())
+// console.log(tosk)
+// console.log(projects.getCompletedTask())
 
 
 
@@ -208,7 +217,8 @@ const screenController = (function(projects) {
         taskCheck.setAttribute('type', 'checkbox');
         taskTitle.textContent = task.title;
         detailsButton.textContent = 'DETAILS';
-        dateSpan.textContent = task.dueDate;
+        let formattedDate = format(new Date(task.dueDate), "do MMM")
+        dateSpan.textContent = formattedDate;
         editIcon.setAttribute('src', '../src/assets/edit-icon.svg');
         editIcon.classList.add('edit-button');
         deleteIcon.setAttribute('src', '../src/assets/delete-icon.svg');
