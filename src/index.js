@@ -1,4 +1,4 @@
-import { isToday, format } from 'date-fns'
+import { isToday, format, add, sub, isWithinInterval } from 'date-fns'
 
 // // console.log('big ass is bae')
 // // If today is 6 October 2014, is 6 October 14:00:00 today?
@@ -6,6 +6,17 @@ import { isToday, format } from 'date-fns'
 
 // console.log(result)
 // //=> true
+
+const result = add(new Date(), { days: 7})
+
+const isSeven = isWithinInterval(new Date(2022, 11, 25), {
+    start: sub(new Date(), { days: 1}),
+    end: add(new Date(), { days: 7})
+  })
+
+  console.log(isSeven)
+
+console.log(result)
 
 const TaskFactory = (title, description, dueDate, priority, status) => {
     // status = 'incomplete';
@@ -80,6 +91,36 @@ const projects = (function() {
         })
 
         return completedTask;
+
+    }
+
+    const getTodaysTasks = () => {
+        let allTask = getAlltask();
+
+        let todayTask = allTask.filter((task) => {
+            if (isToday(new Date(task.dueDate))) {
+                return task
+            }
+        })
+
+        return todayTask
+    }
+
+    const getNext7DaysTasks = () => {
+        let allTask = getAlltask();
+
+        let next7DaysTask = allTask.filter((task) => {
+            let isWithin = isWithinInterval(new Date(task.dueDate), {
+                start: sub(new Date(), { days: 1}),
+                end: add(new Date(), { days: 7})
+              })
+
+              if (isWithin === true ) {
+                return task;
+              }
+        })
+
+        return next7DaysTask;
     }
 
     return {
@@ -94,50 +135,51 @@ const projects = (function() {
         getAlltask,
         getImportantTask,
         getCompletedTask,
+        getTodaysTasks,
+        getNext7DaysTasks,
     }
 })()
 
 
-// let tosk = TaskFactory('james', 'sadasd', '007', 'noooo' )
+let tosk = TaskFactory('james', 'sadasd', '007', 'noooo' )
 
 
-// projects.addProject()
-// projects.addProject()
-// projects.addProject()
+projects.addProject()
+projects.addProject()
+projects.addProject()
 
 
-// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
-// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
-// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
-// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
-// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
-// projects.addTask(1, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+
+projects.addTask(0, 'james', 'sadasd', '2022-12-16', 'yes', 'incomplete')
+projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
+projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
+projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
+projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
+projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
 
 
-// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
-// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
-// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
-// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
-// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
-// projects.addTask(0, 'james', 'sadasd', '007', 'yes', 'incomplete')
+projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
 
 
-// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
-// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
-// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
-// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
-// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
-// projects.addTask(2, 'james', 'sadasd', '007', 'noooo', 'complete')
+projects.editTask(1, 3, 'makevids', 'so i can sell', 1671321600000, 'yes')
 
+// projects.removeTask(1, 3)
 
-// projects.editTask(1, 3, 'makevids', 'so i can sell', 'tuesday', 'yes')
+// projects.removeProject()
 
-// // projects.removeTask(1, 3)
-
-// // projects.removeProject()
-
-// console.log(tosk)
-// console.log(projects.getCompletedTask())
+console.log(tosk)
+console.log(projects.getNext7DaysTasks())
 
 
 
