@@ -7,16 +7,16 @@ import { isToday, format, add, sub, isWithinInterval } from 'date-fns'
 // console.log(result)
 // //=> true
 
-const result = add(new Date(), { days: 7})
+// const result = add(new Date(), { days: 7})
 
-const isSeven = isWithinInterval(new Date(2022, 11, 25), {
-    start: sub(new Date(), { days: 1}),
-    end: add(new Date(), { days: 7})
-  })
+// const isSeven = isWithinInterval(new Date(2022, 11, 25), {
+//     start: sub(new Date(), { days: 1}),
+//     end: add(new Date(), { days: 7})
+//   })
 
-  console.log(isSeven)
+//   console.log(isSeven)
 
-console.log(result)
+// console.log(result)
 
 const TaskFactory = (title, description, dueDate, priority, status) => {
     // status = 'incomplete';
@@ -123,6 +123,8 @@ const projects = (function() {
         return next7DaysTask;
     }
 
+    const filters = [getAlltask, getTodaysTasks, getNext7DaysTasks, getImportantTask, getCompletedTask,]
+
     return {
         addProject,
         getProjects,
@@ -132,54 +134,55 @@ const projects = (function() {
         editTask,
         removeTask,
         getTask,
-        getAlltask,
-        getImportantTask,
-        getCompletedTask,
-        getTodaysTasks,
-        getNext7DaysTasks,
+        // getAlltask,
+        // getImportantTask,
+        // getCompletedTask,
+        // getTodaysTasks,
+        // getNext7DaysTasks,
+        filters,
     }
 })()
 
 
-let tosk = TaskFactory('james', 'sadasd', '007', 'noooo' )
+// let tosk = TaskFactory('james', 'sadasd', '007', 'noooo' )
 
 
-projects.addProject()
-projects.addProject()
-projects.addProject()
+// projects.addProject()
+// projects.addProject()
+// projects.addProject()
 
 
-projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
-projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
-projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
-projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
-projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
-projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
+// projects.addTask(1, 'james', 'sadasd', 1671321600000, 'noooo', 'complete')
 
-projects.addTask(0, 'james', 'sadasd', '2022-12-16', 'yes', 'incomplete')
-projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
-projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
-projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
-projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
-projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
-
-
-projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
-projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
-projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
-projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
-projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
-projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+// projects.addTask(0, 'james', 'sadasd', '2022-12-16', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
+// projects.addTask(0, 'james', 'sadasd', '2022-12-13', 'yes', 'incomplete')
 
 
-projects.editTask(1, 3, 'makevids', 'so i can sell', 1671321600000, 'yes')
+// projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
+// projects.addTask(2, 'james', 'sadasd', '2022-12-25', 'noooo', 'complete')
 
-// projects.removeTask(1, 3)
 
-// projects.removeProject()
+// projects.editTask(1, 3, 'makevids', 'so i can sell', 1671321600000, 'yes')
 
-console.log(tosk)
-console.log(projects.getNext7DaysTasks())
+// // projects.removeTask(1, 3)
+
+// // projects.removeProject()
+
+// console.log(tosk)
+// // console.log(projects.getNext7DaysTasks())
 
 
 
@@ -201,8 +204,13 @@ const screenController = (function(projects) {
     const taskDuedate = document.querySelector('#due-date');
     const taskPriority = document.querySelector('#priority');
     const projectListNames = [];
+    const taskListTitle = document.querySelector('.content.title');
+    const filterNodes = document.querySelectorAll('.filters li' )
+
+
     let currentDisplayIndex = null;
     getSelectedProject();
+    getSelectedFilter();
     let taskFormPurpose = null;
     let modifyTaskItem = null;
 
@@ -274,7 +282,7 @@ const screenController = (function(projects) {
      }
 
      function renderTaskList(selectedProject) {
-        const taskListTitle = document.querySelector('.content.title');
+        // const taskListTitle = document.querySelector('.content.title');
         let taskCollection = []
 
         for (let i = 0; i < projects.getProject(selectedProject).length; i++) {
@@ -293,6 +301,56 @@ const screenController = (function(projects) {
             
         }
       }
+
+      function renderFilter(selectedFilter) {
+        let filterTasksCollection = [];
+
+        for (let i = 0; i < projects.filters[selectedFilter]().length; i++) {
+            let projectFilters = projects.filters[selectedFilter]()
+            filterTasksCollection.push(projectFilters[i])
+        }
+
+        // for (let i = 0; i < filterCollection.length; i++) {
+        //     filterCollection.push(projects.filters[i])
+        // }
+
+        console.log(filterTasksCollection)
+
+        // const filterNodes = document.querySelectorAll('.filters li' )
+        let filterListNames = []
+
+        filterNodes.forEach((filterNode) => {
+            filterListNames.push(filterNode.textContent)
+        })
+
+        taskList.innerText = "";
+        taskListTitle.textContent = filterListNames[selectedFilter];
+
+        for (let i = 0; i < filterTasksCollection.length; i++) {
+            let newTaskNode = createTaskNode(filterTasksCollection[i]);
+            taskList.append(newTaskNode)
+            
+        }
+      
+    }
+
+    function getSelectedFilter() {
+        filterNodes.forEach((node, index) => {
+            node.dataset.index = index
+            node.addEventListener('click', (e) => {
+                for (let i = 0; i < filterNodes.length; i++) {
+                    filterNodes[i].classList.remove('selected')
+                }
+                e.target.classList.add('selected');
+                renderFilter(e.target.dataset.index)
+                // getSelectedFilter()
+                addDeleteTaskButton()
+                addEditButton()
+                addDetailButton()
+                addCheckButton()
+            })
+        })
+    }
 
       function addDeleteTaskButton() {
         const deleteButtons = document.querySelectorAll('.task .delete-button');
