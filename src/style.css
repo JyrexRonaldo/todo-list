@@ -1,3 +1,103 @@
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+}
+
 body {
-    background-color: red;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header, footer {
+    color: #FFFFFF;
+    background-color: #333333;
+    height: 13.2vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+}
+
+main {
+    height: 100%;
+    display: flex;
+}
+
+main > div:first-child {
+    width: 400px;
+    background-color:#DDDDDD;
+    padding: 20px 40px;
+}
+
+main > div:nth-child(2) {
+    /* width: 65%; */
+    background-color:#EEEEEE;
+}
+
+footer {
+    height: 5.4vh;
+    font-size: 1rem;
+}
+
+header span {
+    content: url(./assets/todo-logo.svg);
+}
+
+header p {
+    display: flex;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    /* gap: px; */
+}
+
+ul p {
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+ul > li:first-child {
+    margin: 10px 0px;
+}
+
+button {
+    width: 100%; 
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0px;
+    border-style: none;
+    /* height: 30px; */
+    font-size: 1.2rem;
+    background-color: #DDDDDD;
+}
+
+button:hover {
+    background-color: #CCCCCC;
+}
+
+button:active {
+    font-weight: bolder;
+    /* height: 70px; */
+}
+
+ul span {
+    width: 30px;
+    height: 30px;
+    content: url(./assets/menu.svg);
+    padding: 0px 5px;
+}
+
+ul span:nth-child(2) {
+    content: url(./assets/delete-icon.svg);
+    margin-left: auto;
 }
