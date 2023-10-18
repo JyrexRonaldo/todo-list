@@ -37,8 +37,9 @@ main > div:first-child {
 }
 
 main > div:nth-child(2) {
-    /* width: 65%; */
+    width: 100%;
     background-color:#EEEEEE;
+    padding: 40px 100px 0px;
 }
 
 footer {
@@ -60,7 +61,7 @@ ul {
     /* gap: px; */
 }
 
-ul p {
+main > div:nth-child(1) ul p {
     font-size: 30px;
     font-weight: bolder;
 }
@@ -69,7 +70,7 @@ ul > li:first-child {
     margin: 10px 0px;
 }
 
-button {
+main > div:nth-child(1) button {
     width: 100%; 
     display: flex;
     align-items: center;
@@ -77,15 +78,17 @@ button {
     padding: 0px;
     border-style: none;
     /* height: 30px; */
+    border-radius: 5px;
     font-size: 1.2rem;
     background-color: #DDDDDD;
+    cursor: pointer;
 }
 
-button:hover {
+main > div:nth-child(1) button:hover {
     background-color: #CCCCCC;
 }
 
-button:active {
+main > div:nth-child(1) button:active {
     font-weight: bolder;
     /* height: 70px; */
 }
@@ -97,7 +100,73 @@ ul span {
     padding: 0px 5px;
 }
 
+ul:nth-child(2) li:last-child span {
+    content: url(./assets/add.svg);
+}
+
 ul span:nth-child(2) {
     content: url(./assets/delete-icon.svg);
     margin-left: auto;
+    opacity: 0;
+}
+
+ul:nth-child(2) button:hover span:nth-child(2) {
+    opacity: 1;
+}
+
+.all-task span {
+    content: url(./assets/inbox-arrow-down.svg);   
+}
+
+.today span {
+    content: url(./assets/calendar-today.svg);   
+}
+
+.week span {
+    content: url(./assets/calendar-week.svg);   
+}
+
+.important span {
+    content: url(./assets/exclamation-thick.svg);   
+}
+
+.completed span {
+    content: url(./assets/completed.svg);   
+}
+
+.task-list > p {
+    font-size: 2.4rem;
+    font-weight: bolder;
+}
+
+.task-list li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 40px;
+    height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.task-list span:nth-of-type(1) {
+    content: url(./assets/edit-icon.svg);
+    width: 40px;
+    height: 30px;
+}
+
+.task-list span:nth-of-type(2) {
+    content: url(./assets/delete-icon.svg);
+    width: 40px;
+    height: 30px;
+}
+
+.task-list button {
+    margin-left: auto;
+}
+
+
+.task-list li:hover {
+    background-color: #CCCCCC;
 }
