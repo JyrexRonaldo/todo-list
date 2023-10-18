@@ -55,42 +55,31 @@ header p {
     display: flex;
 }
 
-ul {
-    display: flex;
-    flex-direction: column;
-    /* gap: px; */
-}
-
 main > div:nth-child(1) ul p {
     font-size: 30px;
     font-weight: bolder;
-}
-
-ul > li:first-child {
     margin: 10px 0px;
 }
 
-main > div:nth-child(1) button {
+main > div:nth-child(1) button, .add-task {
     width: 100%; 
     display: flex;
     align-items: center;
     gap: 5px;
     padding: 0px;
     border-style: none;
-    /* height: 30px; */
     border-radius: 5px;
     font-size: 1.2rem;
     background-color: #DDDDDD;
     cursor: pointer;
 }
 
-main > div:nth-child(1) button:hover {
+main > div:nth-child(1) button:hover, .add-task:hover {
     background-color: #CCCCCC;
 }
 
-main > div:nth-child(1) button:active {
+main > div:nth-child(1) button:active, .add-task:active {
     font-weight: bolder;
-    /* height: 70px; */
 }
 
 ul span {
@@ -137,6 +126,7 @@ ul:nth-child(2) button:hover span:nth-child(2) {
 .task-list > p {
     font-size: 2.4rem;
     font-weight: bolder;
+    margin-bottom: 10px;
 }
 
 .task-list li {
@@ -144,7 +134,6 @@ ul:nth-child(2) button:hover span:nth-child(2) {
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
-    padding: 20px 40px;
     height: 50px;
     border-radius: 10px;
     cursor: pointer;
@@ -154,6 +143,7 @@ ul:nth-child(2) button:hover span:nth-child(2) {
     content: url(./assets/edit-icon.svg);
     width: 40px;
     height: 30px;
+    margin-bottom: 5px;
 }
 
 .task-list span:nth-of-type(2) {
@@ -166,7 +156,30 @@ ul:nth-child(2) button:hover span:nth-child(2) {
     margin-left: auto;
 }
 
-
 .task-list li:hover {
     background-color: #CCCCCC;
+}
+
+.add-task {
+    height: 50px;
+    border-radius: 5px;
+    background-color: #EEEEEE;
+}
+
+.task-list input[type=checkbox] {
+    position: relative;
+    appearance: none;
+    border: 4px solid black;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.task-list input[type=checkbox]:checked::before {
+    content: "✔";
+    position: absolute;
+    width: 20px;
+    height: 30px;
+    font-size: 1.3rem;
+    left: 2.5px;
 }
