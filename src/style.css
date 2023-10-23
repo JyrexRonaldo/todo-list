@@ -183,3 +183,9 @@ ul:nth-child(2) button:hover span:nth-child(2) {
     font-size: 1.3rem;
     left: 2.5px;
 }
+
+
+.task-list input[type=checkbox]:checked + p {
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+}
