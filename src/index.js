@@ -17,8 +17,9 @@ const projects = (function(){
         delete projects[projectName];
     }
 
-    const deleteTodoItem = (selectedProject, index)
-    projects[selectedProject].splice(index, 1)
+    const deleteTodoItem = (selectedProject, index) => {
+        projects[selectedProject].splice(index, 1)
+    }
     
 })()
 
