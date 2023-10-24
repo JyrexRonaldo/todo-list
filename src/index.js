@@ -4,15 +4,33 @@ import './style.css';
 const projects = function(){
     const _projects = {
         bible: [
-            todoItem("book", "barbel", "Last yeah", true), 
-            todoItem("book", "barbel", "tomorrow", true), 
-            todoItem("book", "barbel", "next week", true), 
-            todoItem("book", "barbel", "last month", true), 
-            todoItem("book", "barbel", "next century", true),
+            todoItem("boasdok", "arbe", "Lat yeah", true), 
+            todoItem("booasdk", "babel", "tmorrow", true), 
+            todoItem("booasdk", "barl", "net week", true), 
+            todoItem("boasdok", "brel", "lat month", true), 
+            todoItem("boasdok", "rbel", "net century", true),
         ],
-        cash:  "yeah",
-        money: "yeah",
-        ghost: "yeah"
+        cash:  [
+            todoItem("book", "bel", "Last yah", true), 
+            todoItem("book", "bel", "tomorrw", true), 
+            todoItem("book", "bel", "next wek", true), 
+            todoItem("book", "bel", "last mnth", true), 
+            todoItem("book", "bel", "next cntury", true),
+        ],
+        money: [
+            todoItem("bob", "fiat", "Laeah", true), 
+            todoItem("bob", "fiat", "toow", true), 
+            todoItem("bob", "fiat", "neeek", true), 
+            todoItem("bob", "fiat", "laonth", true), 
+            todoItem("bob", "fiat", "neentury", true),
+        ],
+        ghost: [
+            todoItem("jarek", "fiya", "Lah", true), 
+            todoItem("jarek", "fiya", "tw", true), 
+            todoItem("jarek", "fiya", "nek", true), 
+            todoItem("jarek", "fiya", "lnth", true), 
+            todoItem("jarek", "fiya", "nntury", true),
+        ]
     };
 
     const addProject = (projectName) => {
@@ -70,8 +88,6 @@ const makePayments = todoItem("make payments", "pay a lot of cash", "tomorrow", 
 
 makePayments.editTodoItem(null, null, "yesterday", null)
 
-console.log(makePayments.getTodoItem())
-
 const todoController = (function(){
     const _projects = projects()
     let _selectedProject = null;
@@ -123,24 +139,22 @@ const todoController = (function(){
 })()
 
 const screenController = (function() {
-    const projectDiv = document.querySelector("main > div:first-child");
-    const taskDiv = document.querySelector(".task-list");
-    const projectDialog = projectDiv.querySelector("dialog");
-    const taskDialog = taskDiv.querySelector("dialog");
-    const projectList = projectDiv.querySelector("ul:nth-child(2)");
+    const projectSection = document.querySelector("main > div:first-child");
+    const taskSection = document.querySelector(".task-list");
+    const projectDialog = projectSection.querySelector("dialog");
+    const taskDialog = taskSection.querySelector("dialog");
+    const projectList = projectSection.querySelector(".project-div");
+    const taskList = taskSection.querySelector(".task-div");
     const projectListLastItem = document.querySelector(".add .add-project").parentNode.parentNode;
-    const taskList = taskDiv.querySelector("ul");
     const taskListLastItem = document.querySelector(".add .add-task").parentNode.parentNode;
-
-
-    console.log(taskListLastItem)
-
+    const projectNameInput = projectDialog.querySelector("input")
+    
     const updateProjectList = () => {
         const projects = todoController.getProjects();
+        projectList.textContent = "";
         console.log(projects);
         for (const project in projects) {
-            // createProject(project);
-            projectList.insertBefore(createProject(project), projectListLastItem);
+            projectList.append(createProject(project));
         }
     }
 
@@ -153,21 +167,18 @@ const screenController = (function() {
         projectButton.classList.add("project");
         iconSpan.classList.add("project");
         listItem.appendChild(projectButton)
-        projectButton.append(iconSpan, projectName, deleteSpan)
+        projectButton.append(iconSpan, projectName, deleteSpan);
         return listItem;
     }
 
-    todoController.setSelectedProject("bible")
+    // todoController.setSelectedProject("bible")
 
     const updateTaskList = () => {
         const project = todoController.getSelectedProjectTasks();
-        
-        
-        console.log(project);
-
+        taskList.textContent = ""
         project.forEach(todo => {
             console.log(todo)
-            taskList.insertBefore(createTask(todo), taskListLastItem);
+            taskList.append(createTask(todo));
         });
     }
 
@@ -188,24 +199,46 @@ const screenController = (function() {
         return listItem;
     }
 
-    projectDiv.addEventListener("click", (e)=> {
+    projectSection.addEventListener("click", (e)=> {
         if (e.target.getAttribute("class") === "add add-project") {
         projectDialog.showModal()
-        } 
-    });
+        }
+        if (e.target.getAttribute("class") === "project") {
+                todoController.setSelectedProject(e.target.textContent);
+                console.log(todoController.getSelectedProject())
+                updateTaskList();
+            }
 
+        if (e.target.textContent === "Cancel") {
+               projectDialog.close() 
+        }
+
+        if (e.target.textContent === "Add") {
+            todoController.createProject(projectNameInput.value);
+            projectNameInput.value = "";
+            projectDialog.close() 
+            updateProjectList()
+        }
+
+
+
+        console.log(e.target) 
+    });
     
-    taskDiv.addEventListener("click", (e) => {
+    taskSection.addEventListener("click", (e) => {
         if (e.target.getAttribute("class") === "add add-task") {
             taskDialog.showModal()
         }
         console.log(e.target)
+
+        if (e.target.textContent === "Cancel") {
+            taskDialog.close() 
+     }
     });
     
-    console.log(taskDiv)
     
-    updateProjectList();
-    updateTaskList();
+    // updateProjectList();
+    // updateTaskList();
 
 })()
 
