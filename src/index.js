@@ -2,7 +2,12 @@ import './reset.css';
 import './style.css';
 
 const projects = function(){
-    const _projects = {};
+    const _projects = {
+        bible: "yeah",
+        cash:  "yeah",
+        money: "yeah",
+        ghost: "yeah"
+    };
 
     const addProject = (projectName) => {
         _projects[projectName] = []
@@ -54,6 +59,10 @@ const todoController = (function(){
     const _projects = projects()
     const _selectedProject = null;
 
+    function getProjects() {
+        return _projects.getProjects();
+    }
+    
     function getSelectedProject() {
         return _selectedProject
     } 
@@ -88,39 +97,59 @@ const todoController = (function(){
         _projects.getTodoItem(_selectedProject, index);
     }
 
-    return { getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem}
+    return { getProjects, getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem, getTodoItem}
 
 })()
 
 const screenController = (function() {
     const projectDiv = document.querySelector("main > div:first-child");
     const taskDiv = document.querySelector(".task-list");
-    const projectDialog = projectDiv.querySelector("dialog")
-    const taskDialog = taskDiv.querySelector("dialog")
-    const addProjectButton = document.querySelector(".add-project").parentNode;
-    const body = document.querySelector("body");
-    const addTaskButton = document.querySelector(".add-task").parentNode;
+    const projectDialog = projectDiv.querySelector("dialog");
+    const taskDialog = taskDiv.querySelector("dialog");
+    const projectList = projectDiv.querySelector("ul:nth-child(2)")
+    const projectListLastItem = document.querySelector(".add .add-project").parentNode.parentNode
 
+    console.log(projectListLastItem)
 
-    console.log(projectDialog)
+    const updateProjectList = () => {
+        const projects = todoController.getProjects();
+        console.log(projects);
+        for (const project in projects) {
+            createProject(project);
+            projectList.insertBefore(createProject(project), projectListLastItem);
+        }
+    }
+
+    function createProject(project) {
+        const listItem = document.createElement("li");
+        const projectButton = document.createElement("button");
+        const iconSpan = document.createElement("span");
+        const deleteSpan = document.createElement("span");
+        const projectName = document.createTextNode(`${project}`);
+        projectButton.classList.add("project");
+        iconSpan.classList.add("project");
+        listItem.appendChild(projectButton)
+        projectButton.append(iconSpan, projectName, deleteSpan)
+        return listItem
+    }
 
     projectDiv.addEventListener("click", (e)=> {
         if (e.target.getAttribute("class") === "add add-project") {
         projectDialog.showModal()
-        }
-        console.log(e.target)
+        } 
     });
 
+    
     taskDiv.addEventListener("click", (e) => {
-
-        
         if (e.target.getAttribute("class") === "add add-task") {
             taskDialog.showModal()
         }
         console.log(e.target)
     });
-
+    
     console.log(taskDiv)
-
+    
+    updateProjectList()
 
 })()
+
