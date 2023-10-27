@@ -5,25 +5,25 @@ import { format } from 'date-fns'
 const projects = function(){
     let _projects = {
         bible: [
-            todoItem("boasdok", "arbe", "2022-2-2", true), 
-            todoItem("booasdk", "babel", "2022-2-2", true), 
-            todoItem("booasdk", "barl", "2022-2-2", true), 
-            todoItem("boasdok", "brel", "2022-2-2", true), 
-            todoItem("boasdok", "rbel", "2022-2-2", true),
+            todoItem("boasdok", "arbe", "2023-10-04", true), 
+            todoItem("booasdk", "babel", "2023-10-04", true), 
+            todoItem("booasdk", "barl", "2023-10-04", true), 
+            todoItem("boasdok", "brel", "2023-10-04", true), 
+            todoItem("boasdok", "rbel", "2023-10-04", true),
         ],
         cash:  [
-            todoItem("book", "bel", "2022-2-2", true), 
-            todoItem("book", "bel", "2022-2-2", true), 
-            todoItem("book", "bel", "2022-2-2", true), 
-            todoItem("book", "bel", "2022-2-2", true), 
-            todoItem("book", "bel", "2022-2-2", true),
+            todoItem("book", "bel", "2023-10-04", true), 
+            todoItem("book", "bel", "2023-10-04", true), 
+            todoItem("book", "bel", "2023-10-04", true), 
+            todoItem("book", "bel", "2023-10-04", true), 
+            todoItem("book", "bel", "2023-10-04", true),
         ],
         money: [
-            todoItem("bob", "fiat", "2022-2-2", true), 
-            todoItem("bob", "fiat", "2022-2-2", true), 
-            todoItem("bob", "fiat", "2022-2-2", true), 
-            todoItem("bob", "fiat", "2022-2-2", true), 
-            todoItem("bob", "fiat", "2022-2-2", true),
+            todoItem("bob", "fiat", "2023-10-04", true), 
+            todoItem("bob", "fiat", "2023-10-04", true), 
+            todoItem("bob", "fiat", "2023-10-04", true), 
+            todoItem("bob", "fiat", "2023-10-04", true), 
+            todoItem("bob", "fiat", "2023-10-04", true),
         ],
     };
 
@@ -50,11 +50,11 @@ const projects = function(){
     }
 
     const getTodoItem = (selectedProject, index) => {
-        return _projects[selectedProject][index]
+        return _projects[selectedProject][index];
     }
 
     const getProjectTasks = (selectedProject) => {
-        return _projects[selectedProject]
+        return _projects[selectedProject];
     }
 
     return { getProjectTasks, addProject, addTodoItem, getProjects, deleteProject, deleteTodoItem, getTodoItem }
@@ -77,7 +77,7 @@ const todoItem = (title, description, dueDate, priority, status = false) => {
     }
 
     function setTodoStatus(status) {
-        _todoItem.status = status
+        _todoItem.status = status;
     }
     
     return {getTodoItem, editTodoItem, setTodoStatus};
@@ -91,7 +91,7 @@ console.log(makePayments.getTodoItem().status)
 makePayments.editTodoItem(null, null, "yesterday", null)
 
 const todoController = (function(){
-    const _projects = projects()
+    const _projects = projects();
     let _selectedProject = null;
 
     function getProjects() {
@@ -99,7 +99,7 @@ const todoController = (function(){
     }
     
     function getSelectedProject() {
-        return _selectedProject
+        return _selectedProject;
     } 
 
     function setSelectedProject(value) {
@@ -111,16 +111,16 @@ const todoController = (function(){
     }
 
     function createProject(projectName) {
-        _projects.addProject(projectName)
+        _projects.addProject(projectName);
     } 
 
     function createTodo(title, description, dueDate, priority) {
         const todo = todoItem(title, description, dueDate, priority);
-        _projects.addTodoItem(_selectedProject, todo)
+        _projects.addTodoItem(_selectedProject, todo);
     }
 
     function deleteProject(projectName) {
-        _projects.deleteProject(projectName)
+        _projects.deleteProject(projectName);
     }
 
     function deleteTodoItem(index) {
@@ -131,7 +131,7 @@ const todoController = (function(){
 
     function editTodoItem(title, description, dueDate, priority, index) {
         const todoItem = _projects.getTodoItem(_selectedProject, index);
-        todoItem.editTodoItem(title, description, dueDate, priority)
+        todoItem.editTodoItem(title, description, dueDate, priority);
     }
 
     function getTodoItem(index) {
@@ -140,8 +140,8 @@ const todoController = (function(){
 
     function setTodoStatus(status, index) {
         const todoItem = getTodoItem(index);
-        todoItem.setTodoStatus(status)
-        console.log(todoItem.getTodoItem().status) 
+        todoItem.setTodoStatus(status);
+        console.log(todoItem.getTodoItem().status); 
     }
 
     return { setTodoStatus, getSelectedProjectTasks, getProjects, getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem, getTodoItem}
@@ -163,6 +163,8 @@ const screenController = (function() {
     const dueDateInput = taskDialog.querySelector("input#duedate");
     const prioritySelect = taskDialog.querySelector("select#important");
     const taskSectionTitle = taskSection.querySelector("p");
+    const formAddButton = taskDialog.querySelector(".task-buttons button:first-child");
+    let editItemIndex = 0;
     
     console.log(prioritySelect)
 
@@ -183,7 +185,7 @@ const screenController = (function() {
         const projectName = document.createTextNode(`${project}`);
         projectButton.classList.add("project");
         iconSpan.classList.add("project");
-        listItem.appendChild(projectButton)
+        listItem.appendChild(projectButton);
         projectButton.append(iconSpan, projectName, deleteSpan);
         return listItem;
     }
@@ -194,9 +196,7 @@ const screenController = (function() {
         taskSectionTitle.textContent = todoController.getSelectedProject();
         let project = todoController.getSelectedProjectTasks();
         taskList.textContent = ""; 
-        console.log(project);
         project.forEach((todo, index) => {
-            console.log(todo)
             taskList.append(createTask(todo, index));
         });
     }
@@ -213,34 +213,35 @@ const screenController = (function() {
         detailsButton.textContent = "Details";
         const dueDatePara = document.createElement("p");
         const [year, month, day] = todoItem.dueDate.split("-")
-        const formattedDate = format(new Date(year, month, day), 'do MMM')
+        const formattedDate = format(new Date(year, (month - 1), day), 'do MMM')
         dueDatePara.textContent = `${formattedDate}`;
         const editSpan = document.createElement("span");
+        editSpan.classList.add("edit");
         const deleteSpan = document.createElement("span");
         deleteSpan.classList.add("del");
-        listItem.append(checkBox, taskTitle, detailsButton, dueDatePara, editSpan, deleteSpan)
+        listItem.append(checkBox, taskTitle, detailsButton, dueDatePara, editSpan, deleteSpan);
         return listItem;
     }
 
     projectSection.addEventListener("click", (e)=> {
         if (e.target.getAttribute("class") === "add add-project") {
-        projectDialog.showModal()
+        projectDialog.showModal();
         }
         if (e.target.getAttribute("class") === "project") {
                 todoController.setSelectedProject(e.target.textContent);
-                console.log(todoController.getSelectedProject())
+                console.log(todoController.getSelectedProject());
                 updateTaskList();
             }
 
         if (e.target.textContent === "Cancel") {
-               projectDialog.close() 
+               projectDialog.close(); 
         }
 
         if (e.target.textContent === "Add") {
             todoController.createProject(projectNameInput.value);
             projectNameInput.value = "";
-            projectDialog.close() 
-            updateProjectList()
+            projectDialog.close(); 
+            updateProjectList();
         }
 
 
@@ -250,12 +251,15 @@ const screenController = (function() {
     
     taskSection.addEventListener("click", (e) => {
         if (e.target.getAttribute("class") === "add add-task") {
-            taskDialog.showModal()
+            formAddButton.textContent = "Add";
+            taskDialog.showModal();
         }
         console.log(e.target)
 
         if (e.target.textContent === "Cancel") {
-            taskDialog.close() 
+            // taskDialog.close();
+            removeAttribute()
+            taskDialog.close();
         }
 
 
@@ -275,12 +279,51 @@ const screenController = (function() {
             console.log("yeah");
             const todoIndex = e.target.parentNode.dataset.index;
             todoController.deleteTodoItem(todoIndex);
-            updateTaskList()
+            updateTaskList();
+        }
+
+        if (e.target.getAttribute("class") === "edit") {
+            formAddButton.textContent = "Edit";
+            const todoIndex = e.target.parentNode.dataset.index;
+            const todoItem = todoController.getTodoItem(todoIndex).getTodoItem();
+            taskTitleInput.value = todoItem.title
+            descriptionTextarea.value = todoItem.description
+            console.log(todoItem.dueDate)
+            dueDateInput.value = todoItem.dueDate
+            prioritySelect.value = todoItem.priority
+            taskDialog.showModal();
+            editItemIndex = todoIndex;
+        }
+
+        if (e.target.textContent === "Edit") {
+            todoController.editTodoItem(taskTitleInput.value, descriptionTextarea.value, dueDateInput.value, prioritySelect.value, editItemIndex);
+            resetTaskDialog();
+            updateTaskList();
+        }
+
+        if (e.target.textContent === "Details") {
+            taskTitleInput.setAttribute("disabled", true);
+            descriptionTextarea.setAttribute("disabled", true);
+            dueDateInput.setAttribute("disabled", true);
+            prioritySelect.setAttribute("disabled", true);
+            formAddButton.setAttribute("display", "hidden");
+            taskDialog.showModal();
         }
 
 
     });
+
+    window.addEventListener("keydown", (e) => {
+        removeAttribute()
+    });
     
+    function removeAttribute() {
+        taskTitleInput.removeAttribute("disabled");
+        descriptionTextarea.removeAttribute("disabled");
+        dueDateInput.removeAttribute("disabled");
+        prioritySelect.removeAttribute("disabled");
+    }
+
     function resetTaskDialog() {
         taskTitleInput.value = ""; 
         descriptionTextarea.value = ""; 
