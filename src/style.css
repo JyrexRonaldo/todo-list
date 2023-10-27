@@ -316,3 +316,9 @@ textarea {
 .project-dialog button {
     width: 80px;
 }
+
+.task-list > p {
+    height: 40px;
+    display: flex;
+    align-items: center;
+}

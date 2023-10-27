@@ -1,36 +1,30 @@
 import './reset.css';
 import './style.css';
+import { format } from 'date-fns'
 
 const projects = function(){
-    const _projects = {
+    let _projects = {
         bible: [
-            todoItem("boasdok", "arbe", "Lat yeah", true), 
-            todoItem("booasdk", "babel", "tmorrow", true), 
-            todoItem("booasdk", "barl", "net week", true), 
-            todoItem("boasdok", "brel", "lat month", true), 
-            todoItem("boasdok", "rbel", "net century", true),
+            todoItem("boasdok", "arbe", "2022-2-2", true), 
+            todoItem("booasdk", "babel", "2022-2-2", true), 
+            todoItem("booasdk", "barl", "2022-2-2", true), 
+            todoItem("boasdok", "brel", "2022-2-2", true), 
+            todoItem("boasdok", "rbel", "2022-2-2", true),
         ],
         cash:  [
-            todoItem("book", "bel", "Last yah", true), 
-            todoItem("book", "bel", "tomorrw", true), 
-            todoItem("book", "bel", "next wek", true), 
-            todoItem("book", "bel", "last mnth", true), 
-            todoItem("book", "bel", "next cntury", true),
+            todoItem("book", "bel", "2022-2-2", true), 
+            todoItem("book", "bel", "2022-2-2", true), 
+            todoItem("book", "bel", "2022-2-2", true), 
+            todoItem("book", "bel", "2022-2-2", true), 
+            todoItem("book", "bel", "2022-2-2", true),
         ],
         money: [
-            todoItem("bob", "fiat", "Laeah", true), 
-            todoItem("bob", "fiat", "toow", true), 
-            todoItem("bob", "fiat", "neeek", true), 
-            todoItem("bob", "fiat", "laonth", true), 
-            todoItem("bob", "fiat", "neentury", true),
+            todoItem("bob", "fiat", "2022-2-2", true), 
+            todoItem("bob", "fiat", "2022-2-2", true), 
+            todoItem("bob", "fiat", "2022-2-2", true), 
+            todoItem("bob", "fiat", "2022-2-2", true), 
+            todoItem("bob", "fiat", "2022-2-2", true),
         ],
-        ghost: [
-            todoItem("jarek", "fiya", "Lah", true), 
-            todoItem("jarek", "fiya", "tw", true), 
-            todoItem("jarek", "fiya", "nek", true), 
-            todoItem("jarek", "fiya", "lnth", true), 
-            todoItem("jarek", "fiya", "nntury", true),
-        ]
     };
 
     const addProject = (projectName) => {
@@ -50,7 +44,9 @@ const projects = function(){
     }
 
     const deleteTodoItem = (selectedProject, index) => {
-        _projects[selectedProject].splice(index, 1)
+        console.log(_projects[selectedProject]);
+        _projects[selectedProject].splice(index, 1);
+        console.log(_projects[selectedProject]);
     }
 
     const getTodoItem = (selectedProject, index) => {
@@ -65,9 +61,9 @@ const projects = function(){
     
 }
 
-const todoItem = (title, description, dueDate, priority) => {
+const todoItem = (title, description, dueDate, priority, status = false) => {
     
-    const _todoItem = {title, description, dueDate, priority}; 
+    const _todoItem = {title, description, dueDate, priority, status}; 
 
     function editTodoItem(title, description, dueDate, priority) {
         _todoItem.title = title ? title : _todoItem.title;
@@ -79,12 +75,18 @@ const todoItem = (title, description, dueDate, priority) => {
     function getTodoItem() {
         return _todoItem;
     }
+
+    function setTodoStatus(status) {
+        _todoItem.status = status
+    }
     
-    return {getTodoItem, editTodoItem};
+    return {getTodoItem, editTodoItem, setTodoStatus};
 }
 
 
-const makePayments = todoItem("make payments", "pay a lot of cash", "tomorrow", "yes very important" )
+const makePayments = todoItem("make payments", "pay a lot of cash", "2022-2-2", "yes very important" )
+
+console.log(makePayments.getTodoItem().status)
 
 makePayments.editTodoItem(null, null, "yesterday", null)
 
@@ -122,7 +124,9 @@ const todoController = (function(){
     }
 
     function deleteTodoItem(index) {
-        _projects.deleteProject(_selectedProject, index)
+        console.log(_selectedProject);
+        console.log(index);
+        _projects.deleteTodoItem(_selectedProject, index);
     }
 
     function editTodoItem(title, description, dueDate, priority, index) {
@@ -131,10 +135,16 @@ const todoController = (function(){
     }
 
     function getTodoItem(index) {
-        _projects.getTodoItem(_selectedProject, index);
+        return _projects.getTodoItem(_selectedProject, index);
     }
 
-    return { getSelectedProjectTasks, getProjects, getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem, getTodoItem}
+    function setTodoStatus(status, index) {
+        const todoItem = getTodoItem(index);
+        todoItem.setTodoStatus(status)
+        console.log(todoItem.getTodoItem().status) 
+    }
+
+    return { setTodoStatus, getSelectedProjectTasks, getProjects, getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem, getTodoItem}
 
 })()
 
@@ -147,8 +157,15 @@ const screenController = (function() {
     const taskList = taskSection.querySelector(".task-div");
     const projectListLastItem = document.querySelector(".add .add-project").parentNode.parentNode;
     const taskListLastItem = document.querySelector(".add .add-task").parentNode.parentNode;
-    const projectNameInput = projectDialog.querySelector("input")
+    const projectNameInput = projectDialog.querySelector("input");
+    const taskTitleInput = taskDialog.querySelector("input#title");
+    const descriptionTextarea = taskDialog.querySelector("textarea#description");
+    const dueDateInput = taskDialog.querySelector("input#duedate");
+    const prioritySelect = taskDialog.querySelector("select#important");
+    const taskSectionTitle = taskSection.querySelector("p");
     
+    console.log(prioritySelect)
+
     const updateProjectList = () => {
         const projects = todoController.getProjects();
         projectList.textContent = "";
@@ -174,17 +191,20 @@ const screenController = (function() {
     // todoController.setSelectedProject("bible")
 
     const updateTaskList = () => {
-        const project = todoController.getSelectedProjectTasks();
-        taskList.textContent = ""
-        project.forEach(todo => {
+        taskSectionTitle.textContent = todoController.getSelectedProject();
+        let project = todoController.getSelectedProjectTasks();
+        taskList.textContent = ""; 
+        console.log(project);
+        project.forEach((todo, index) => {
             console.log(todo)
-            taskList.append(createTask(todo));
+            taskList.append(createTask(todo, index));
         });
     }
 
-    function createTask(todo) {
+    function createTask(todo, index) {
         const todoItem = todo.getTodoItem();
         const listItem = document.createElement("li");
+        listItem.dataset.index = index;
         const checkBox = document.createElement("input");
         checkBox.setAttribute("type", "checkbox");
         const taskTitle = document.createElement("p");
@@ -192,9 +212,12 @@ const screenController = (function() {
         const detailsButton = document.createElement("button");
         detailsButton.textContent = "Details";
         const dueDatePara = document.createElement("p");
-        dueDatePara.textContent = `${todoItem.dueDate}`;
+        const [year, month, day] = todoItem.dueDate.split("-")
+        const formattedDate = format(new Date(year, month, day), 'do MMM')
+        dueDatePara.textContent = `${formattedDate}`;
         const editSpan = document.createElement("span");
         const deleteSpan = document.createElement("span");
+        deleteSpan.classList.add("del");
         listItem.append(checkBox, taskTitle, detailsButton, dueDatePara, editSpan, deleteSpan)
         return listItem;
     }
@@ -233,10 +256,37 @@ const screenController = (function() {
 
         if (e.target.textContent === "Cancel") {
             taskDialog.close() 
-     }
+        }
+
+
+        if (e.target.textContent === "Add") {
+           todoController.createTodo(taskTitleInput.value, descriptionTextarea.value, dueDateInput.value, prioritySelect.value);
+           resetTaskDialog();
+           updateTaskList(); 
+        }
+
+        if (e.target.getAttribute("type") === "checkbox" ) {
+            const todoIndex = e.target.parentNode.dataset.index;
+            const todoStatus = e.target.checked;
+            todoController.setTodoStatus(todoStatus, todoIndex);
+        }
+
+        if (e.target.getAttribute("class") === "del") {
+            console.log("yeah");
+            const todoIndex = e.target.parentNode.dataset.index;
+            todoController.deleteTodoItem(todoIndex);
+            updateTaskList()
+        }
+
+
     });
     
-    
+    function resetTaskDialog() {
+        taskTitleInput.value = ""; 
+        descriptionTextarea.value = ""; 
+        dueDateInput.value = "";
+        prioritySelect.value = "";
+    }
     // updateProjectList();
     // updateTaskList();
 
