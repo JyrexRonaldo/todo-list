@@ -1,6 +1,6 @@
 import './reset.css';
 import './style.css';
-import { format } from 'date-fns'
+import { format, isToday, isThisWeek, parseISO } from 'date-fns'
 
 const projects = function(){
     let _projects = {
@@ -12,11 +12,11 @@ const projects = function(){
             todoItem("boasdok", "rbel", "2023-10-04", true),
         ],
         cash:  [
-            todoItem("book", "bel", "2023-10-04", true), 
-            todoItem("book", "bel", "2023-10-04", true), 
-            todoItem("book", "bel", "2023-10-04", true), 
-            todoItem("book", "bel", "2023-10-04", true), 
-            todoItem("book", "bel", "2023-10-04", true),
+            todoItem("book", "bel", "2023-10-04", false), 
+            todoItem("book", "bel", "2023-10-04", false), 
+            todoItem("book", "bel", "2023-10-04", false), 
+            todoItem("book", "bel", "2023-10-04", false), 
+            todoItem("book", "bel", "2023-10-04", false),
         ],
         money: [
             todoItem("bob", "fiat", "2023-10-04", true), 
@@ -152,20 +152,59 @@ const todoController = (function(){
 
     function getAllTask() {
         const allProjects = _projects.getProjects()
-        const getAllTask = []
+        const allTask = [];
         for (let project in allProjects) {
             allProjects[project].forEach((todo) => {
-                getAllTask.push(todo)
+                allTask.push(todo);
             })
         }
         filterCode = 1;
-        
-        filteredItems = getAllTask;
+        filteredItems = allTask;
     }
 
-    // function  
+    function getTodayTasks() {
+        const allProjects = _projects.getProjects();
+        const todayTasks = [];
+        for (let project in allProjects) {
+            allProjects[project].forEach((todo) => {
+                if (isToday(parseISO(todo.getTodoItem().dueDate))) {
+                    todayTasks.push(todo);
+                }
+            })
+        }
+        filterCode = 1;
+        filteredItems = todayTasks;
+    }
 
-    return { getAllTask, setTodoStatus, getSelectedProjectTasks, getProjects, getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem, getTodoItem}
+    function getWeekTasks() {
+        const allProjects = _projects.getProjects();
+        const weekTasks = [];
+        for (let project in allProjects) {
+            allProjects[project].forEach((todo) => {
+                if (isThisWeek(parseISO(todo.getTodoItem().dueDate))) {
+                    weekTasks.push(todo);
+                }
+            })
+        }
+        filterCode = 1;
+        filteredItems = weekTasks;
+    }
+
+    function getImportantTasks() {
+        const allProjects = _projects.getProjects();
+        const importantTasks = [];
+        for (let project in allProjects) {
+            allProjects[project].forEach((todo) => {
+                if (todo.getTodoItem().priority === true) {
+                    importantTasks.push(todo);
+                }
+            })
+        }
+        filterCode = 1;
+        filteredItems = importantTasks;
+    }
+
+    return { getImportantTasks, getWeekTasks, getTodayTasks, getAllTask, setTodoStatus, getSelectedProjectTasks, getProjects, getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem, getTodoItem}
 
 })()
 
@@ -176,8 +215,6 @@ const screenController = (function() {
     const taskDialog = taskSection.querySelector("dialog");
     const projectList = projectSection.querySelector(".project-div");
     const taskList = taskSection.querySelector(".task-div");
-    const projectListLastItem = document.querySelector(".add .add-project").parentNode.parentNode;
-    const taskListLastItem = document.querySelector(".add .add-task").parentNode.parentNode;
     const projectNameInput = projectDialog.querySelector("input");
     const taskTitleInput = taskDialog.querySelector("input#title");
     const descriptionTextarea = taskDialog.querySelector("textarea#description");
@@ -266,10 +303,28 @@ const screenController = (function() {
         }
 
         if (e.target.textContent === "All Task") {
-            todoController.getAllTask()
-            updateTaskList()
+            todoController.setSelectedProject("All Task");
+            todoController.getAllTask();
+            updateTaskList();
         }
 
+        if (e.target.textContent === "Today") {
+            todoController.setSelectedProject("Today");
+            todoController.getTodayTasks();
+            updateTaskList();
+        }
+
+        if (e.target.textContent === "This week") {
+            todoController.setSelectedProject("This week");
+            todoController.getWeekTasks();
+            updateTaskList();
+        }
+        
+        if (e.target.textContent === "Important") {
+            todoController.setSelectedProject("Important");
+            todoController.getImportantTasks();
+            updateTaskList();
+        }
 
 
         console.log(e.target) 
@@ -361,4 +416,4 @@ const screenController = (function() {
 
 })()
 
-// console.log(todoController.getAllTask())
+console.log(todoController.getTodayTasks())
