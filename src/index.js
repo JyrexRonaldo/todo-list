@@ -93,6 +93,8 @@ makePayments.editTodoItem(null, null, "yesterday", null)
 const todoController = (function(){
     const _projects = projects();
     let _selectedProject = null;
+    let filterCode = 0;
+    let filteredItems = null;
 
     function getProjects() {
         return _projects.getProjects();
@@ -107,7 +109,11 @@ const todoController = (function(){
     }
 
     function getSelectedProjectTasks() {
-        return _projects.getProjectTasks(_selectedProject);
+        if (filterCode === 1) {
+            filterCode = 0;
+            return filteredItems;
+        } 
+            return _projects.getProjectTasks(_selectedProject);
     }
 
     function createProject(projectName) {
@@ -144,7 +150,22 @@ const todoController = (function(){
         console.log(todoItem.getTodoItem().status); 
     }
 
-    return { setTodoStatus, getSelectedProjectTasks, getProjects, getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem, getTodoItem}
+    function getAllTask() {
+        const allProjects = _projects.getProjects()
+        const getAllTask = []
+        for (let project in allProjects) {
+            allProjects[project].forEach((todo) => {
+                getAllTask.push(todo)
+            })
+        }
+        filterCode = 1;
+        
+        filteredItems = getAllTask;
+    }
+
+    // function  
+
+    return { getAllTask, setTodoStatus, getSelectedProjectTasks, getProjects, getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem, getTodoItem}
 
 })()
 
@@ -244,6 +265,11 @@ const screenController = (function() {
             updateProjectList();
         }
 
+        if (e.target.textContent === "All Task") {
+            todoController.getAllTask()
+            updateTaskList()
+        }
+
 
 
         console.log(e.target) 
@@ -257,7 +283,6 @@ const screenController = (function() {
         console.log(e.target)
 
         if (e.target.textContent === "Cancel") {
-            // taskDialog.close();
             removeAttribute()
             taskDialog.close();
         }
@@ -306,7 +331,8 @@ const screenController = (function() {
             descriptionTextarea.setAttribute("disabled", true);
             dueDateInput.setAttribute("disabled", true);
             prioritySelect.setAttribute("disabled", true);
-            formAddButton.setAttribute("display", "hidden");
+            formAddButton.setAttribute("display", "none");
+            formAddButton.textContent = "Immortaaal"
             taskDialog.showModal();
         }
 
@@ -335,3 +361,4 @@ const screenController = (function() {
 
 })()
 
+// console.log(todoController.getAllTask())
