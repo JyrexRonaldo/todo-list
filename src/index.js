@@ -204,7 +204,21 @@ const todoController = (function(){
         filteredItems = importantTasks;
     }
 
-    return { getImportantTasks, getWeekTasks, getTodayTasks, getAllTask, setTodoStatus, getSelectedProjectTasks, getProjects, getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem, getTodoItem}
+    function getCompletedTasks() {
+        const allProjects = _projects.getProjects();
+        const completedTasks = [];
+        for (let project in allProjects) {
+            allProjects[project].forEach((todo) => {
+                if (todo.getTodoItem().status === true) {
+                    completedTasks.push(todo);
+                }
+            })
+        }
+        filterCode = 1;
+        filteredItems = completedTasks;
+    }
+
+    return { getCompletedTasks, getImportantTasks, getWeekTasks, getTodayTasks, getAllTask, setTodoStatus, getSelectedProjectTasks, getProjects, getSelectedProject, setSelectedProject, createProject, createTodo, deleteProject, deleteTodoItem, editTodoItem, getTodoItem}
 
 })()
 
@@ -265,6 +279,7 @@ const screenController = (function() {
         listItem.dataset.index = index;
         const checkBox = document.createElement("input");
         checkBox.setAttribute("type", "checkbox");
+        checkBox.checked = todo.getTodoItem().status
         const taskTitle = document.createElement("p");
         taskTitle.textContent = `${todoItem.title}`;
         const detailsButton = document.createElement("button");
@@ -289,6 +304,7 @@ const screenController = (function() {
                 todoController.setSelectedProject(e.target.textContent);
                 console.log(todoController.getSelectedProject());
                 updateTaskList();
+                updateTaskList();
             }
 
         if (e.target.textContent === "Cancel") {
@@ -302,28 +318,45 @@ const screenController = (function() {
             updateProjectList();
         }
 
-        if (e.target.textContent === "All Task") {
+        if (e.target.getAttribute("class") === "all-task") {
             todoController.setSelectedProject("All Task");
             todoController.getAllTask();
             updateTaskList();
         }
 
-        if (e.target.textContent === "Today") {
+        if (e.target.getAttribute("class") === "today") {
             todoController.setSelectedProject("Today");
             todoController.getTodayTasks();
             updateTaskList();
         }
 
-        if (e.target.textContent === "This week") {
+        if (e.target.getAttribute("class") === "week") {
             todoController.setSelectedProject("This week");
             todoController.getWeekTasks();
             updateTaskList();
         }
         
-        if (e.target.textContent === "Important") {
+        if (e.target.getAttribute("class") === "important") {
             todoController.setSelectedProject("Important");
             todoController.getImportantTasks();
             updateTaskList();
+        }
+
+        if (e.target.getAttribute("class") === "completed") {
+            console.log("yeahhhhhhh")
+            todoController.setSelectedProject("Completed");
+            todoController.getCompletedTasks();
+            updateTaskList();
+        }
+
+        switch (e.target.getAttribute("class")) {
+            case "all-task":
+            case "today":
+            case "week":
+            case "important":
+            case "completed":    
+                document.querySelector(".add-task").parentNode.style.display = "none";
+                break;
         }
 
 
@@ -339,6 +372,7 @@ const screenController = (function() {
 
         if (e.target.textContent === "Cancel") {
             removeAttribute()
+            formAddButton.style.display = "inline-block";
             taskDialog.close();
         }
 
@@ -386,8 +420,7 @@ const screenController = (function() {
             descriptionTextarea.setAttribute("disabled", true);
             dueDateInput.setAttribute("disabled", true);
             prioritySelect.setAttribute("disabled", true);
-            formAddButton.setAttribute("display", "none");
-            formAddButton.textContent = "Immortaaal"
+            formAddButton.style.display = "none";
             taskDialog.showModal();
         }
 
@@ -396,6 +429,7 @@ const screenController = (function() {
 
     window.addEventListener("keydown", (e) => {
         removeAttribute()
+        formAddButton.style.display = "inline-block";
     });
     
     function removeAttribute() {
