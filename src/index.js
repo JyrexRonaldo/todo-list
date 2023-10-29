@@ -283,11 +283,28 @@ const todoController = (function () {
   function deleteTodoItem(index) {
     console.log(_selectedProject);
     console.log(index);
-    _projects.deleteTodoItem(_selectedProject, index);
+    // _projects.deleteTodoItem(_selectedProject, index);
+    switch (_selectedProject) {
+        case "All task":
+        case "Today":
+        case "This Week":
+        case "Important":
+        case "Completed":
+          let actualproject = _getActualTodoItem(index);
+          console.log("alpha");
+          return _projects.deleteTodoItem(
+            actualproject.projectName,
+            actualproject.todoActualIndex
+          );
+        default:
+          console.log("beta");
+          return _projects.deleteTodoItem(_selectedProject, index);
+      }
   }
 
   function editTodoItem(title, description, dueDate, priority, index) {
-    const todoItem = _projects.getTodoItem(_selectedProject, index);
+    // const todoItem = _projects.getTodoItem(_selectedProject, index);
+    const todoItem = getTodoItem(index)
     todoItem.editTodoItem(title, description, dueDate, priority);
   }
 
@@ -576,16 +593,16 @@ const screenController = (function () {
   const projectList = projectSection.querySelector(".project-div");
   const taskList = taskSection.querySelector(".task-div");
   const projectNameInput = projectDialog.querySelector("input");
-  const taskTitleInput = taskDialog.querySelector("input#title");
-  const descriptionTextarea = taskDialog.querySelector("textarea#description");
-  const dueDateInput = taskDialog.querySelector("input#duedate");
-  const prioritySelect = taskDialog.querySelector("select#important");
+  let taskTitleInput = taskDialog.querySelector("input#title");
+  let descriptionTextarea = taskDialog.querySelector("textarea#description");
+  let dueDateInput = taskDialog.querySelector("input#duedate");
+  let prioritySelect = taskDialog.querySelector("select#important");
   const taskSectionTitle = taskSection.querySelector("p");
   const formAddButton = taskDialog.querySelector(
     ".task-buttons button:first-child"
   );
   const addTaskButton = document.querySelector(".add-task").parentNode;
-  let editItemIndex = 0;
+  let editItemIndex = null;
 
   console.log(prioritySelect);
 
@@ -665,6 +682,30 @@ const screenController = (function () {
   }
 
 
+  function updateDisplay() {
+    switch (todoController.getSelectedProject()) {
+        case "All Task":
+            updateFilters(todoController.getAllTask());
+            break;
+        case "Today":
+            updateFilters(todoController.getTodayTasks());
+            break;
+        case "This Week":
+            updateFilters(todoController.getWeekTasks());
+            break;
+        case "Important":
+            updateFilters(todoController.getImportantTasks());
+            break;
+        case "Completed":
+          updateFilters(todoController.getCompletedTasks());
+        //   updateFilters(todoController.getFilteredItems());
+          break;
+        default:
+            updateTaskList();
+            break;
+      }
+  }
+
 
 
 
@@ -701,26 +742,30 @@ const screenController = (function () {
 
     if (e.target.getAttribute("class") === "all-task") {
       todoController.setSelectedProject("All Task");
-      todoController.getAllTask();
-      updateTaskList();
+    //   todoController.getAllTask();
+    //   updateTaskList();
+    updateFilters(todoController.getAllTask())
     }
 
     if (e.target.getAttribute("class") === "today") {
       todoController.setSelectedProject("Today");
-      todoController.getTodayTasks();
-      updateTaskList();
+    //   todoController.getTodayTasks();
+    //   updateTaskList();
+    updateFilters(todoController.getTodayTasks())
     }
 
     if (e.target.getAttribute("class") === "week") {
       todoController.setSelectedProject("This Week");
-      todoController.getWeekTasks();
-      updateTaskList();
+    //   todoController.getWeekTasks();
+    //   updateTaskList();
+    updateFilters(todoController.getWeekTasks())
     }
 
     if (e.target.getAttribute("class") === "important") {
       todoController.setSelectedProject("Important");
-      todoController.getImportantTasks();
-      updateTaskList();
+    //   todoController.getImportantTasks();
+    //   updateTaskList();
+    updateFilters(todoController.getImportantTasks())
     }
 
     if (e.target.getAttribute("class") === "completed") {
@@ -787,26 +832,14 @@ const screenController = (function () {
       todoController.setTodoStatus(todoStatus, todoIndex);
     //   updateTaskList();
       // updateTaskList();
-      switch (todoController.getSelectedProject()) {
-        case "All Task":
-        case "Today":
-        case "Week":
-        case "Important":
-        case "Completed":
-          updateFilters(todoController.getCompletedTasks());
-        //   updateFilters(todoController.getFilteredItems());
-          break;
-        default:
-            updateTaskList();
-            break;
-      }
+      updateDisplay()
     }
 
     if (e.target.getAttribute("class") === "del") {
       console.log("yeah");
       const todoIndex = e.target.parentNode.dataset.index;
       todoController.deleteTodoItem(todoIndex);
-      updateTaskList();
+      updateDisplay()
     }
 
     if (e.target.getAttribute("class") === "edit") {
@@ -831,10 +864,17 @@ const screenController = (function () {
         editItemIndex
       );
       resetTaskDialog();
-      updateTaskList();
+      updateDisplay()
     }
 
     if (e.target.textContent === "Details") {
+        const todoIndex = e.target.parentNode.dataset.index;
+        const todoItem = todoController.getTodoItem(todoIndex).getTodoItem();
+        taskTitleInput.value = todoItem.title;
+        descriptionTextarea.value = todoItem.description;
+        dueDateInput.value = todoItem.dueDate;
+        prioritySelect.value = todoItem.priority;
+
       taskTitleInput.setAttribute("disabled", true);
       descriptionTextarea.setAttribute("disabled", true);
       dueDateInput.setAttribute("disabled", true);
