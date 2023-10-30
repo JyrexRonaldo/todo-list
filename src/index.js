@@ -496,6 +496,7 @@ const screenController = (function () {
             updateDisplay();
             addTaskButton.style.display = "none";
         }   
+        updateDisplay()
     }
   });
 
