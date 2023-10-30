@@ -498,6 +498,8 @@ const screenController = (function () {
       }
       updateDisplay();
     }
+
+    highlightSelectedProjectButton()
   });
 
   taskSection.addEventListener("click", (e) => {
@@ -589,7 +591,28 @@ const screenController = (function () {
       formAddButton.style.display = "none";
       taskDialog.showModal();
     }
+
+    highlightSelectedProjectButton()
   });
+
+  function highlightSelectedProjectButton() {
+    let buttons = document.querySelectorAll("main div:nth-child(1) button:not(.add-project, [type='button'])")
+    console.log(buttons);
+    buttons.forEach((button) => {
+        button.classList.remove("selected")
+        button.classList.remove("selectedDiv")
+        button.classList.remove("selectedProject")
+    })
+
+    buttons.forEach((button) => {
+        if (button.textContent === todoController.getSelectedProject()) {
+            // button.classList.add("selected selectedDiv selectedProject")
+            button.classList.add("selected")
+            button.classList.add("selectedDiv")
+            button.classList.add("selectedProject")
+        }
+    })
+  }
 
   window.addEventListener("keydown", (e) => {
     removeAttribute();

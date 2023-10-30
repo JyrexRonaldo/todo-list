@@ -322,3 +322,8 @@ textarea {
     display: flex;
     align-items: center;
 }
+
+.selected.selectedDiv.selectedProject {
+    background-color: #CCCCCC;
+    font-weight: bolder;
+}
