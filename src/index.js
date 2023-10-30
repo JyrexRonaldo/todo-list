@@ -19,11 +19,11 @@ const projects = function () {
       todoItem("cash", "book5", "bel", "2023-10-04", false),
     ],
     money: [
-      todoItem("money", "bob1", "fiat", "2023-10-04", true),
-      todoItem("money", "bob2", "fiat", "2023-10-04", true),
-      todoItem("money", "bob3", "fiat", "2023-10-04", true),
-      todoItem("money", "bob4", "fiat", "2023-10-04", true),
-      todoItem("money", "bob5", "fiat", "2023-10-04", true),
+      todoItem("money", "bob1", "fiat", "2023-10-04", false),
+      todoItem("money", "bob2", "fiat", "2023-10-04", false),
+      todoItem("money", "bob3", "fiat", "2023-10-04", false),
+      todoItem("money", "bob4", "fiat", "2023-10-04", false),
+      todoItem("money", "bob5", "fiat", "2023-10-04", false),
     ],
   };
 
@@ -44,9 +44,7 @@ const projects = function () {
   };
 
   const deleteTodoItem = (selectedProject, index) => {
-    console.log(_projects[selectedProject]);
     _projects[selectedProject].splice(index, 1);
-    console.log(_projects[selectedProject]);
   };
 
   const getTodoItem = (selectedProject, index) => {
@@ -68,64 +66,6 @@ const projects = function () {
   };
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const todoItem = (
   projectName,
   title,
@@ -134,6 +74,7 @@ const todoItem = (
   priority,
   status = false
 ) => {
+  _convertPriority();
   const _todoItem = {
     projectName,
     title,
@@ -144,10 +85,11 @@ const todoItem = (
   };
 
   function editTodoItem(title, description, dueDate, priority) {
+    _convertPriority();
     _todoItem.title = title ? title : _todoItem.title;
     _todoItem.description = description ? description : _todoItem.description;
     _todoItem.dueDate = dueDate ? dueDate : _todoItem.dueDate;
-    _todoItem.priority = priority ? priority : _todoItem.priority;
+    _todoItem.priority = priority;
   }
 
   function getTodoItem() {
@@ -158,83 +100,20 @@ const todoItem = (
     _todoItem.status = status;
   }
 
+  function _convertPriority() {
+    if (priority === "true") {
+      priority = true;
+    } else if (priority === "false") {
+      priority = false;
+    }
+  }
+
   return { getTodoItem, editTodoItem, setTodoStatus };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const todoController = (function () {
   const _projects = projects();
   let _selectedProject = null;
-//   let filterCode = 0;
-//   let _filteredItems = null;
 
   function getProjects() {
     return _projects.getProjects();
@@ -249,10 +128,6 @@ const todoController = (function () {
   }
 
   function getSelectedProjectTasks() {
-    // if (filterCode === 1) {
-    //   filterCode = 0;
-    //   return _filteredItems;
-    // }
     return _projects.getProjectTasks(_selectedProject);
   }
 
@@ -269,47 +144,13 @@ const todoController = (function () {
       priority
     );
     _projects.addTodoItem(_selectedProject, todo);
-    console.log(todo);
   }
-
-//   function getFilteredItems() {
-//     return _filteredItems;
-//   }
 
   function deleteProject(projectName) {
     _projects.deleteProject(projectName);
   }
 
   function deleteTodoItem(index) {
-    console.log(_selectedProject);
-    console.log(index);
-    // _projects.deleteTodoItem(_selectedProject, index);
-    switch (_selectedProject) {
-        case "All task":
-        case "Today":
-        case "This Week":
-        case "Important":
-        case "Completed":
-          let actualproject = _getActualTodoItem(index);
-          console.log("alpha");
-          return _projects.deleteTodoItem(
-            actualproject.projectName,
-            actualproject.todoActualIndex
-          );
-        default:
-          console.log("beta");
-          return _projects.deleteTodoItem(_selectedProject, index);
-      }
-  }
-
-  function editTodoItem(title, description, dueDate, priority, index) {
-    // const todoItem = _projects.getTodoItem(_selectedProject, index);
-    const todoItem = getTodoItem(index)
-    todoItem.editTodoItem(title, description, dueDate, priority);
-  }
-
-  function getTodoItem(index) {
-    // let actualproject = _getActualTodoItem(index).projectName;
     switch (_selectedProject) {
       case "All task":
       case "Today":
@@ -317,22 +158,40 @@ const todoController = (function () {
       case "Important":
       case "Completed":
         let actualproject = _getActualTodoItem(index);
-        console.log("alpha");
+        return _projects.deleteTodoItem(
+          actualproject.projectName,
+          actualproject.todoActualIndex
+        );
+      default:
+        return _projects.deleteTodoItem(_selectedProject, index);
+    }
+  }
+
+  function editTodoItem(title, description, dueDate, priority, index) {
+    const todoItem = getTodoItem(index);
+    todoItem.editTodoItem(title, description, dueDate, priority);
+  }
+
+  function getTodoItem(index) {
+    switch (_selectedProject) {
+      case "All task":
+      case "Today":
+      case "This Week":
+      case "Important":
+      case "Completed":
+        let actualproject = _getActualTodoItem(index);
         return _projects.getTodoItem(
           actualproject.projectName,
           actualproject.todoActualIndex
         );
       default:
-        console.log("beta");
         return _projects.getTodoItem(_selectedProject, index);
     }
-    // return _projects.getTodoItem(_selectedProject, index);
   }
 
   function setTodoStatus(status, index) {
     const todoItem = getTodoItem(index);
     todoItem.setTodoStatus(status);
-    console.log(todoItem.getTodoItem().status);
   }
 
   function getAllTask() {
@@ -343,8 +202,6 @@ const todoController = (function () {
         allTask.push(todo);
       });
     }
-    // filterCode = 1;
-    // _filteredItems = allTask;
     return allTask;
   }
 
@@ -358,8 +215,6 @@ const todoController = (function () {
         }
       });
     }
-    // filterCode = 1;
-    // _filteredItems = todayTasks;
     return todayTasks;
   }
 
@@ -373,8 +228,6 @@ const todoController = (function () {
         }
       });
     }
-    // filterCode = 1;
-    // _filteredItems = weekTasks;
     return weekTasks;
   }
 
@@ -388,8 +241,6 @@ const todoController = (function () {
         }
       });
     }
-    // filterCode = 1;
-    // _filteredItems = importantTasks;
     return importantTasks;
   }
 
@@ -403,57 +254,42 @@ const todoController = (function () {
         }
       });
     }
-    // filterCode = 1;
-    // _filteredItems = completedTasks;
-    return completedTasks
+    return completedTasks;
   }
 
   function _getActualTodoItem(index) {
-    // let filteredArray = null;
     let _filteredItems = null;
     let projectName = null;
     let todoActualIndex = 0;
     let todoTitle = null;
-    console.log(_selectedProject);
     switch (_selectedProject) {
       case "All Task":
         _filteredItems = getAllTask();
-        // filteredArray = _filteredItems;
         break;
       case "Today":
         _filteredItems = getTodayTasks();
-        // filteredArray = _filteredItems;
         break;
       case "This Week":
         _filteredItems = getWeekTasks();
-        // filteredArray = getWeekTasks();
         break;
       case "Important":
         _filteredItems = getImportantTasks();
-        // filteredArray = getImportantTasks();
         break;
       case "Completed":
         _filteredItems = getCompletedTasks();
-        // filteredArray = getCompletedTasks();
         break;
     }
-    console.log(_filteredItems);
+
     projectName = _filteredItems[index].getTodoItem().projectName;
     todoTitle = _filteredItems[index].getTodoItem().title;
-    console.log(projectName);
-    console.log(todoTitle);
     let allTodos = _projects.getProjectTasks(projectName);
-    console.log(allTodos);
-
     for (let todo of allTodos) {
-      console.log(todoTitle);
       if (todo.getTodoItem().title === todoTitle) {
         break;
       }
       todoActualIndex++;
     }
 
-    console.log(todoActualIndex);
     return { projectName, todoActualIndex };
   }
 
@@ -474,116 +310,8 @@ const todoController = (function () {
     deleteTodoItem,
     editTodoItem,
     getTodoItem,
-    // getFilteredItems,
   };
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const screenController = (function () {
   const projectSection = document.querySelector("main > div:first-child");
@@ -604,14 +332,9 @@ const screenController = (function () {
   const addTaskButton = document.querySelector(".add-task").parentNode;
   let editItemIndex = null;
 
-  console.log(prioritySelect);
-
-
-
   const updateProjectList = () => {
     const projects = todoController.getProjects();
     projectList.textContent = "";
-    console.log(projects);
     for (const project in projects) {
       projectList.append(createProject(project));
     }
@@ -630,8 +353,6 @@ const screenController = (function () {
     return listItem;
   }
 
-  // todoController.setSelectedProject("bible")
-
   const updateTaskList = () => {
     taskSectionTitle.textContent = todoController.getSelectedProject();
     let project = todoController.getSelectedProjectTasks();
@@ -645,10 +366,10 @@ const screenController = (function () {
     taskSectionTitle.textContent = todoController.getSelectedProject();
     taskList.textContent = "";
     filteredArray.forEach((item, index) => {
-        let listItem = createTask(item, index)
-        taskList.append(listItem);
+      let listItem = createTask(item, index);
+      taskList.append(listItem);
     });
-  }
+  };
 
   function createTask(todo, index) {
     const todoItem = todo.getTodoItem();
@@ -677,40 +398,31 @@ const screenController = (function () {
       editSpan,
       deleteSpan
     );
-    console.log(todoItem.projectName);
     return listItem;
   }
 
-
   function updateDisplay() {
     switch (todoController.getSelectedProject()) {
-        case "All Task":
-            updateFilters(todoController.getAllTask());
-            break;
-        case "Today":
-            updateFilters(todoController.getTodayTasks());
-            break;
-        case "This Week":
-            updateFilters(todoController.getWeekTasks());
-            break;
-        case "Important":
-            updateFilters(todoController.getImportantTasks());
-            break;
-        case "Completed":
-          updateFilters(todoController.getCompletedTasks());
-        //   updateFilters(todoController.getFilteredItems());
-          break;
-        default:
-            updateTaskList();
-            break;
-      }
+      case "All Task":
+        updateFilters(todoController.getAllTask());
+        break;
+      case "Today":
+        updateFilters(todoController.getTodayTasks());
+        break;
+      case "This Week":
+        updateFilters(todoController.getWeekTasks());
+        break;
+      case "Important":
+        updateFilters(todoController.getImportantTasks());
+        break;
+      case "Completed":
+        updateFilters(todoController.getCompletedTasks());
+        break;
+      default:
+        updateTaskList();
+        break;
+    }
   }
-
-
-
-
-
-
 
   projectSection.addEventListener("click", (e) => {
     if (e.target.getAttribute("class") === "add add-project") {
@@ -720,7 +432,6 @@ const screenController = (function () {
     if (e.target.getAttribute("class") === "project") {
       addTaskButton.style.display = "flex";
       todoController.setSelectedProject(e.target.textContent);
-      console.log(todoController.getSelectedProject());
       updateTaskList();
       updateTaskList();
     }
@@ -736,48 +447,30 @@ const screenController = (function () {
       updateProjectList();
     }
 
-
-
-
-
     if (e.target.getAttribute("class") === "all-task") {
       todoController.setSelectedProject("All Task");
-    //   todoController.getAllTask();
-    //   updateTaskList();
-    updateFilters(todoController.getAllTask())
+      updateFilters(todoController.getAllTask());
     }
 
     if (e.target.getAttribute("class") === "today") {
       todoController.setSelectedProject("Today");
-    //   todoController.getTodayTasks();
-    //   updateTaskList();
-    updateFilters(todoController.getTodayTasks())
+      updateFilters(todoController.getTodayTasks());
     }
 
     if (e.target.getAttribute("class") === "week") {
       todoController.setSelectedProject("This Week");
-    //   todoController.getWeekTasks();
-    //   updateTaskList();
-    updateFilters(todoController.getWeekTasks())
+      updateFilters(todoController.getWeekTasks());
     }
 
     if (e.target.getAttribute("class") === "important") {
       todoController.setSelectedProject("Important");
-    //   todoController.getImportantTasks();
-    //   updateTaskList();
-    updateFilters(todoController.getImportantTasks())
+      updateFilters(todoController.getImportantTasks());
     }
 
     if (e.target.getAttribute("class") === "completed") {
-      console.log("yeahhhhhhh");
       todoController.setSelectedProject("Completed");
-    //   todoController.getCompletedTasks();
-    //   updateFilters(todoController.getFilteredItems());
-        updateFilters(todoController.getCompletedTasks());
+      updateFilters(todoController.getCompletedTasks());
     }
-
-
-
 
     switch (e.target.getAttribute("class")) {
       case "all-task":
@@ -788,23 +481,13 @@ const screenController = (function () {
         addTaskButton.style.display = "none";
         break;
     }
-
-    console.log(e.target);
   });
-
-
-
-
-
-
-
 
   taskSection.addEventListener("click", (e) => {
     if (e.target.getAttribute("class") === "add add-task") {
       formAddButton.textContent = "Add";
       taskDialog.showModal();
     }
-    console.log(e.target);
 
     if (e.target.textContent === "Cancel") {
       removeAttribute();
@@ -824,22 +507,16 @@ const screenController = (function () {
     }
 
     if (e.target.getAttribute("type") === "checkbox") {
-      console.log("Yeahhhhhhhhhhhhhh");
       const todoIndex = e.target.parentNode.dataset.index;
-      console.log(todoIndex);
       const todoStatus = e.target.checked;
-      console.log(todoStatus);
       todoController.setTodoStatus(todoStatus, todoIndex);
-    //   updateTaskList();
-      // updateTaskList();
-      updateDisplay()
+      updateDisplay();
     }
 
     if (e.target.getAttribute("class") === "del") {
-      console.log("yeah");
       const todoIndex = e.target.parentNode.dataset.index;
       todoController.deleteTodoItem(todoIndex);
-      updateDisplay()
+      updateDisplay();
     }
 
     if (e.target.getAttribute("class") === "edit") {
@@ -848,7 +525,7 @@ const screenController = (function () {
       const todoItem = todoController.getTodoItem(todoIndex).getTodoItem();
       taskTitleInput.value = todoItem.title;
       descriptionTextarea.value = todoItem.description;
-      console.log(todoItem.dueDate);
+
       dueDateInput.value = todoItem.dueDate;
       prioritySelect.value = todoItem.priority;
       taskDialog.showModal();
@@ -864,17 +541,16 @@ const screenController = (function () {
         editItemIndex
       );
       resetTaskDialog();
-      updateDisplay()
+      updateDisplay();
     }
 
     if (e.target.textContent === "Details") {
-        const todoIndex = e.target.parentNode.dataset.index;
-        const todoItem = todoController.getTodoItem(todoIndex).getTodoItem();
-        taskTitleInput.value = todoItem.title;
-        descriptionTextarea.value = todoItem.description;
-        dueDateInput.value = todoItem.dueDate;
-        prioritySelect.value = todoItem.priority;
-
+      const todoIndex = e.target.parentNode.dataset.index;
+      const todoItem = todoController.getTodoItem(todoIndex).getTodoItem();
+      taskTitleInput.value = todoItem.title;
+      descriptionTextarea.value = todoItem.description;
+      dueDateInput.value = todoItem.dueDate;
+      prioritySelect.value = todoItem.priority;
       taskTitleInput.setAttribute("disabled", true);
       descriptionTextarea.setAttribute("disabled", true);
       dueDateInput.setAttribute("disabled", true);
@@ -883,14 +559,6 @@ const screenController = (function () {
       taskDialog.showModal();
     }
   });
-
-
-
-
-
-
-
-
 
   window.addEventListener("keydown", (e) => {
     removeAttribute();
@@ -910,8 +578,4 @@ const screenController = (function () {
     dueDateInput.value = "";
     prioritySelect.value = "";
   }
-  // updateProjectList();
-  // updateTaskList();
 })();
-
-console.log(todoController.getTodayTasks());
