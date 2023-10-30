@@ -74,7 +74,11 @@ const todoItem = (
   priority,
   status = false
 ) => {
-  _convertPriority();
+    if (priority === "true") {
+        priority = true;
+      } else if (priority === "false") {
+        priority = false;
+      }
   const _todoItem = {
     projectName,
     title,
@@ -85,7 +89,11 @@ const todoItem = (
   };
 
   function editTodoItem(title, description, dueDate, priority) {
-    _convertPriority();
+    if (priority === "true") {
+        priority = true;
+      } else if (priority === "false") {
+        priority = false;
+      }
     _todoItem.title = title ? title : _todoItem.title;
     _todoItem.description = description ? description : _todoItem.description;
     _todoItem.dueDate = dueDate ? dueDate : _todoItem.dueDate;
@@ -100,13 +108,6 @@ const todoItem = (
     _todoItem.status = status;
   }
 
-  function _convertPriority() {
-    if (priority === "true") {
-      priority = true;
-    } else if (priority === "false") {
-      priority = false;
-    }
-  }
 
   return { getTodoItem, editTodoItem, setTodoStatus };
 };
