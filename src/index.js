@@ -512,6 +512,7 @@ const screenController = (function () {
       removeAttribute();
       formAddButton.style.display = "inline-block";
       taskDialog.close();
+      resetTaskDialog();
     }
 
     if (e.target.textContent === "Add") {
@@ -597,7 +598,6 @@ const screenController = (function () {
 
   function highlightSelectedProjectButton() {
     let buttons = document.querySelectorAll("main div:nth-child(1) button:not(.add-project, [type='button'])")
-    console.log(buttons);
     buttons.forEach((button) => {
         button.classList.remove("selected")
         button.classList.remove("selectedDiv")
@@ -606,7 +606,6 @@ const screenController = (function () {
 
     buttons.forEach((button) => {
         if (button.textContent === todoController.getSelectedProject()) {
-            // button.classList.add("selected selectedDiv selectedProject")
             button.classList.add("selected")
             button.classList.add("selectedDiv")
             button.classList.add("selectedProject")
@@ -632,4 +631,12 @@ const screenController = (function () {
     dueDateInput.value = "";
     prioritySelect.value = "";
   }
+
+  
+    if (taskSectionTitle.textContent === "Selected Project") {
+        addTaskButton.style.display = "none";
+    }
+   
+  
+//   ienitialRender()
 })();
