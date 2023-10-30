@@ -74,11 +74,11 @@ const todoItem = (
   priority,
   status = false
 ) => {
-    if (priority === "true") {
-        priority = true;
-      } else if (priority === "false") {
-        priority = false;
-      }
+  if (priority === "true") {
+    priority = true;
+  } else if (priority === "false") {
+    priority = false;
+  }
   const _todoItem = {
     projectName,
     title,
@@ -90,10 +90,10 @@ const todoItem = (
 
   function editTodoItem(title, description, dueDate, priority) {
     if (priority === "true") {
-        priority = true;
-      } else if (priority === "false") {
-        priority = false;
-      }
+      priority = true;
+    } else if (priority === "false") {
+      priority = false;
+    }
     _todoItem.title = title ? title : _todoItem.title;
     _todoItem.description = description ? description : _todoItem.description;
     _todoItem.dueDate = dueDate ? dueDate : _todoItem.dueDate;
@@ -107,7 +107,6 @@ const todoItem = (
   function setTodoStatus(status) {
     _todoItem.status = status;
   }
-
 
   return { getTodoItem, editTodoItem, setTodoStatus };
 };
@@ -153,7 +152,7 @@ const todoController = (function () {
 
   function deleteTodoItem(index) {
     switch (_selectedProject) {
-      case "All task":
+      case "All Task":
       case "Today":
       case "This Week":
       case "Important":
@@ -175,7 +174,7 @@ const todoController = (function () {
 
   function getTodoItem(index) {
     switch (_selectedProject) {
-      case "All task":
+      case "All Task":
       case "Today":
       case "This Week":
       case "Important":
