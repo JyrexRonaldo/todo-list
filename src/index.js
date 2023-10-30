@@ -348,7 +348,7 @@ const screenController = (function () {
     const projectName = document.createTextNode(`${project}`);
     projectButton.classList.add("project");
     iconSpan.classList.add("project");
-    deleteSpan.classList.add("del-project")
+    deleteSpan.classList.add("del-project");
     listItem.appendChild(projectButton);
     projectButton.append(iconSpan, projectName, deleteSpan);
     return listItem;
@@ -359,9 +359,9 @@ const screenController = (function () {
     let project = todoController.getSelectedProjectTasks();
     taskList.textContent = "";
     if (project !== undefined) {
-        project.forEach((todo, index) => {
-            taskList.append(createTask(todo, index));
-          });    
+      project.forEach((todo, index) => {
+        taskList.append(createTask(todo, index));
+      });
     }
   };
 
@@ -444,10 +444,12 @@ const screenController = (function () {
     }
 
     if (e.target.textContent === "Add") {
-      todoController.createProject(projectNameInput.value);
-      projectNameInput.value = "";
-      projectDialog.close();
-      updateProjectList();
+      if (projectNameInput.value.trim() !== "") {
+        todoController.createProject(projectNameInput.value);
+        projectNameInput.value = "";
+        projectDialog.close();
+        updateProjectList();
+      }
     }
 
     if (e.target.getAttribute("class") === "all-task") {
@@ -486,17 +488,15 @@ const screenController = (function () {
     }
 
     if (e.target.getAttribute("class") === "del-project") {
-        console.log("insert functionality")
-        let projectName = e.target.parentNode.textContent;
-        console.log(projectName);
-        todoController.deleteProject(projectName);
-        updateProjectList();
-        if (todoController.getSelectedProject() === projectName) {
-            todoController.setSelectedProject("");
-            updateDisplay();
-            addTaskButton.style.display = "none";
-        }   
-        updateDisplay()
+      let projectName = e.target.parentNode.textContent;
+      todoController.deleteProject(projectName);
+      updateProjectList();
+      if (todoController.getSelectedProject() === projectName) {
+        todoController.setSelectedProject("");
+        updateDisplay();
+        addTaskButton.style.display = "none";
+      }
+      updateDisplay();
     }
   });
 
@@ -513,14 +513,21 @@ const screenController = (function () {
     }
 
     if (e.target.textContent === "Add") {
-      todoController.createTodo(
-        taskTitleInput.value,
-        descriptionTextarea.value,
-        dueDateInput.value,
-        prioritySelect.value
-      );
-      resetTaskDialog();
-      updateTaskList();
+      if (
+        taskTitleInput.value.trim() !== "" &&
+        descriptionTextarea.value.trim() !== "" &&
+        dueDateInput.value.trim() !== ""
+      ) {
+        todoController.createTodo(
+          taskTitleInput.value,
+          descriptionTextarea.value,
+          dueDateInput.value,
+          prioritySelect.value
+        );
+        resetTaskDialog();
+        taskDialog.close();
+        updateTaskList();
+      }
     }
 
     if (e.target.getAttribute("type") === "checkbox") {
@@ -550,15 +557,22 @@ const screenController = (function () {
     }
 
     if (e.target.textContent === "Edit") {
-      todoController.editTodoItem(
-        taskTitleInput.value,
-        descriptionTextarea.value,
-        dueDateInput.value,
-        prioritySelect.value,
-        editItemIndex
-      );
-      resetTaskDialog();
-      updateDisplay();
+      if (
+        taskTitleInput.value.trim() !== "" &&
+        descriptionTextarea.value.trim() !== "" &&
+        dueDateInput.value.trim() !== ""
+      ) {
+        todoController.editTodoItem(
+          taskTitleInput.value,
+          descriptionTextarea.value,
+          dueDateInput.value,
+          prioritySelect.value,
+          editItemIndex
+        );
+        resetTaskDialog();
+        taskDialog.close();
+        updateDisplay();
+      }
     }
 
     if (e.target.textContent === "Details") {
