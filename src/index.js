@@ -348,6 +348,7 @@ const screenController = (function () {
     const projectName = document.createTextNode(`${project}`);
     projectButton.classList.add("project");
     iconSpan.classList.add("project");
+    deleteSpan.classList.add("del-project")
     listItem.appendChild(projectButton);
     projectButton.append(iconSpan, projectName, deleteSpan);
     return listItem;
@@ -357,9 +358,11 @@ const screenController = (function () {
     taskSectionTitle.textContent = todoController.getSelectedProject();
     let project = todoController.getSelectedProjectTasks();
     taskList.textContent = "";
-    project.forEach((todo, index) => {
-      taskList.append(createTask(todo, index));
-    });
+    if (project !== undefined) {
+        project.forEach((todo, index) => {
+            taskList.append(createTask(todo, index));
+          });    
+    }
   };
 
   const updateFilters = (filteredArray) => {
@@ -480,6 +483,19 @@ const screenController = (function () {
       case "completed":
         addTaskButton.style.display = "none";
         break;
+    }
+
+    if (e.target.getAttribute("class") === "del-project") {
+        console.log("insert functionality")
+        let projectName = e.target.parentNode.textContent;
+        console.log(projectName);
+        todoController.deleteProject(projectName);
+        updateProjectList();
+        if (todoController.getSelectedProject() === projectName) {
+            todoController.setSelectedProject("");
+            updateDisplay();
+            addTaskButton.style.display = "none";
+        }   
     }
   });
 
