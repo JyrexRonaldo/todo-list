@@ -3,29 +3,7 @@ import "./style.css";
 import { format, isToday, isThisWeek, parseISO } from "date-fns";
 
 const projects = function () {
-  let _projects = {
-    bible: [
-      todoItem("bible", "boasdok1", "arbe", "2023-10-04", true),
-      todoItem("bible", "booasdk2", "babel", "2023-10-04", true),
-      todoItem("bible", "booasdk3", "barl", "2023-10-04", true),
-      todoItem("bible", "boasdok4", "brel", "2023-10-04", true),
-      todoItem("bible", "boasdok5", "rbel", "2023-10-04", true),
-    ],
-    cash: [
-      todoItem("cash", "book1", "bel", "2023-10-04", false),
-      todoItem("cash", "book2", "bel", "2023-10-04", false),
-      todoItem("cash", "book3", "bel", "2023-10-04", false),
-      todoItem("cash", "book4", "bel", "2023-10-04", false),
-      todoItem("cash", "book5", "bel", "2023-10-04", false),
-    ],
-    money: [
-      todoItem("money", "bob1", "fiat", "2023-10-04", false),
-      todoItem("money", "bob2", "fiat", "2023-10-04", false),
-      todoItem("money", "bob3", "fiat", "2023-10-04", false),
-      todoItem("money", "bob4", "fiat", "2023-10-04", false),
-      todoItem("money", "bob5", "fiat", "2023-10-04", false),
-    ],
-  };
+  let _projects = {};
 
   const addProject = (projectName) => {
     _projects[projectName] = [];
@@ -40,9 +18,9 @@ const projects = function () {
   };
 
   const setProjects = (projects) => {
-    _projects = projects
-  }
-  
+    _projects = projects;
+  };
+
   const deleteProject = (projectName) => {
     delete _projects[projectName];
   };
@@ -70,37 +48,6 @@ const projects = function () {
     setProjects,
   };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const todoItem = (
   projectName,
@@ -146,44 +93,6 @@ const todoItem = (
 
   return { getTodoItem, editTodoItem, setTodoStatus };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const todoController = (function () {
   const _projects = projects();
@@ -392,34 +301,6 @@ const todoController = (function () {
   };
 })();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const screenController = (function () {
   const projectSection = document.querySelector("main > div:first-child");
   const taskSection = document.querySelector(".task-list");
@@ -515,21 +396,27 @@ const screenController = (function () {
     switch (todoController.getSelectedProject()) {
       case "All Task":
         updateFilters(todoController.getAllTask());
+        addTaskButton.style.display = "none";
         break;
       case "Today":
         updateFilters(todoController.getTodayTasks());
+        addTaskButton.style.display = "none";
         break;
       case "This Week":
         updateFilters(todoController.getWeekTasks());
+        addTaskButton.style.display = "none";
         break;
       case "Important":
         updateFilters(todoController.getImportantTasks());
+        addTaskButton.style.display = "none";
         break;
       case "Completed":
         updateFilters(todoController.getCompletedTasks());
+        addTaskButton.style.display = "none";
         break;
       default:
         updateTaskList();
+        addTaskButton.style.display = "flex";
         break;
     }
   }
@@ -606,7 +493,7 @@ const screenController = (function () {
       updateDisplay();
     }
 
-    // storeProjects();
+    storeProjects();
     highlightSelectedProjectButton();
   });
 
@@ -701,7 +588,7 @@ const screenController = (function () {
       taskDialog.showModal();
     }
 
-    // storeProjects();
+    storeProjects();
     highlightSelectedProjectButton();
   });
 
@@ -747,67 +634,64 @@ const screenController = (function () {
     addTaskButton.style.display = "none";
   }
 
-  document.addEventListener('umload', () => {
-    storeProjects();
-  })
-
-  document.addEventListener("load", () => {
-    renderStoredProjects();
-  })
-
   function storeProjects() {
-    let hprojects = null;
-    if (todoController.getProjects() !== null) {
-       hprojects = todoController.getProjects();  
-       console.log(hprojects)
+    let sProjects = Object.assign({}, todoController.getProjects());
+    for (const key in sProjects) {
+      let convertedKeyArray = sProjects[key].map((item) => {
+        let array = [
+          item.getTodoItem().projectName,
+          item.getTodoItem().title,
+          item.getTodoItem().description,
+          item.getTodoItem().dueDate,
+          item.getTodoItem().priority,
+          item.getTodoItem().status,
+        ];
+        return array;
+      });
+      sProjects[key] = convertedKeyArray;
     }
-    // let hprojects = todoController.getProjects();
-
-    for (const key in hprojects) {
-      let newProject = hprojects[key].map((item) => {
-        console.log(item)
-          let array =  [item.getTodoItem().projectName, item.getTodoItem().title, item.getTodoItem().description, item.getTodoItem().dueDate, item.getTodoItem().priority, item.getTodoItem().status];
-          return array;
-      })
-      hprojects[key] = newProject;
-    }
-  
-    console.log(hprojects);
-  
-    localStorage.setItem("project", JSON.stringify(hprojects));
-    localStorage.setItem("selectedProject", JSON.stringify(todoController.getSelectedProject()));
+    localStorage.setItem("project", JSON.stringify(sProjects));
+    localStorage.setItem(
+      "selectedProject",
+      todoController.getSelectedProject()
+    );
   }
 
   function renderStoredProjects() {
     let storedProject = null;
-    if (localStorage.getItem('project') !== null) {
-       storedProject = JSON.parse(localStorage.getItem('project'));  
-    } else if (localStorage.getItem('project') === null) {
-      return
+    if (localStorage.getItem("project") !== null) {
+      storedProject = JSON.parse(localStorage.getItem("project"));
+    } else if (localStorage.getItem("project") === null) {
+      return;
     }
 
     if (localStorage.getItem("selectedProject")) {
-      todoController.setSelectedProject(localStorage.getItem("selectedProject"));  
+      todoController.setSelectedProject(
+        localStorage.getItem("selectedProject")
+      );
     } else {
-       return
+      return;
     }
-        
+
     for (const project in storedProject) {
-          let activatedProjects = storedProject[project].map((item) => {
-              let todo = todoItem(item[0], item[1], item[2], item[3], item[4], item[5]);
-              return todo;
-          });
-          storedProject[project] = activatedProjects;
-      }
+      let activatedProjects = storedProject[project].map((item) => {
+        let todo = todoItem(
+          item[0],
+          item[1],
+          item[2],
+          item[3],
+          item[4],
+          item[5]
+        );
+        return todo;
+      });
+      storedProject[project] = activatedProjects;
+    }
 
-      console.log(storedProject)
-
-      todoController.setProjects(storedProject);
-      updateDisplay();
-      updateProjectList();
+    todoController.setProjects(storedProject);
+    updateDisplay();
+    updateProjectList();
   }
 
-  // renderStoredProjects();
-
-
+  renderStoredProjects();
 })();
