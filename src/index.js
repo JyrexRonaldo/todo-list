@@ -486,6 +486,7 @@ const screenController = (function () {
       todoController.deleteProject(projectName);
       updateProjectList();
       updateDisplay();
+      addTaskButton.style.display = "none";
       if (todoController.getSelectedProject() === projectName) {
         todoController.setSelectedProject("");
         updateDisplay();
@@ -691,6 +692,7 @@ const screenController = (function () {
     todoController.setProjects(storedProject);
     updateDisplay();
     updateProjectList();
+    highlightSelectedProjectButton();
   }
 
   renderStoredProjects();
