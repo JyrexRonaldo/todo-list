@@ -485,12 +485,12 @@ const screenController = (function () {
       let projectName = e.target.parentNode.textContent;
       todoController.deleteProject(projectName);
       updateProjectList();
+      updateDisplay();
       if (todoController.getSelectedProject() === projectName) {
         todoController.setSelectedProject("");
         updateDisplay();
         addTaskButton.style.display = "none";
       }
-      updateDisplay();
     }
 
     storeProjects();
