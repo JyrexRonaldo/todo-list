@@ -39,6 +39,10 @@ const projects = function () {
     return _projects;
   };
 
+  const setProjects = (projects) => {
+    _projects = projects
+  }
+  
   const deleteProject = (projectName) => {
     delete _projects[projectName];
   };
@@ -63,8 +67,40 @@ const projects = function () {
     deleteProject,
     deleteTodoItem,
     getTodoItem,
+    setProjects,
   };
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const todoItem = (
   projectName,
@@ -111,12 +147,54 @@ const todoItem = (
   return { getTodoItem, editTodoItem, setTodoStatus };
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const todoController = (function () {
   const _projects = projects();
   let _selectedProject = null;
 
   function getProjects() {
     return _projects.getProjects();
+  }
+
+  function setProjects(value) {
+    _projects.setProjects(value);
   }
 
   function getSelectedProject() {
@@ -310,8 +388,37 @@ const todoController = (function () {
     deleteTodoItem,
     editTodoItem,
     getTodoItem,
+    setProjects,
   };
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const screenController = (function () {
   const projectSection = document.querySelector("main > div:first-child");
@@ -499,7 +606,8 @@ const screenController = (function () {
       updateDisplay();
     }
 
-    highlightSelectedProjectButton()
+    // storeProjects();
+    highlightSelectedProjectButton();
   });
 
   taskSection.addEventListener("click", (e) => {
@@ -593,24 +701,27 @@ const screenController = (function () {
       taskDialog.showModal();
     }
 
-    highlightSelectedProjectButton()
+    // storeProjects();
+    highlightSelectedProjectButton();
   });
 
   function highlightSelectedProjectButton() {
-    let buttons = document.querySelectorAll("main div:nth-child(1) button:not(.add-project, [type='button'])")
+    let buttons = document.querySelectorAll(
+      "main div:nth-child(1) button:not(.add-project, [type='button'])"
+    );
     buttons.forEach((button) => {
-        button.classList.remove("selected")
-        button.classList.remove("selectedDiv")
-        button.classList.remove("selectedProject")
-    })
+      button.classList.remove("selected");
+      button.classList.remove("selectedDiv");
+      button.classList.remove("selectedProject");
+    });
 
     buttons.forEach((button) => {
-        if (button.textContent === todoController.getSelectedProject()) {
-            button.classList.add("selected")
-            button.classList.add("selectedDiv")
-            button.classList.add("selectedProject")
-        }
-    })
+      if (button.textContent === todoController.getSelectedProject()) {
+        button.classList.add("selected");
+        button.classList.add("selectedDiv");
+        button.classList.add("selectedProject");
+      }
+    });
   }
 
   window.addEventListener("keydown", (e) => {
@@ -632,11 +743,71 @@ const screenController = (function () {
     prioritySelect.value = "";
   }
 
-  
-    if (taskSectionTitle.textContent === "Selected Project") {
-        addTaskButton.style.display = "none";
+  if (taskSectionTitle.textContent === "Selected Project") {
+    addTaskButton.style.display = "none";
+  }
+
+  document.addEventListener('umload', () => {
+    storeProjects();
+  })
+
+  document.addEventListener("load", () => {
+    renderStoredProjects();
+  })
+
+  function storeProjects() {
+    let hprojects = null;
+    if (todoController.getProjects() !== null) {
+       hprojects = todoController.getProjects();  
+       console.log(hprojects)
     }
-   
+    // let hprojects = todoController.getProjects();
+
+    for (const key in hprojects) {
+      let newProject = hprojects[key].map((item) => {
+        console.log(item)
+          let array =  [item.getTodoItem().projectName, item.getTodoItem().title, item.getTodoItem().description, item.getTodoItem().dueDate, item.getTodoItem().priority, item.getTodoItem().status];
+          return array;
+      })
+      hprojects[key] = newProject;
+    }
   
-//   ienitialRender()
+    console.log(hprojects);
+  
+    localStorage.setItem("project", JSON.stringify(hprojects));
+    localStorage.setItem("selectedProject", JSON.stringify(todoController.getSelectedProject()));
+  }
+
+  function renderStoredProjects() {
+    let storedProject = null;
+    if (localStorage.getItem('project') !== null) {
+       storedProject = JSON.parse(localStorage.getItem('project'));  
+    } else if (localStorage.getItem('project') === null) {
+      return
+    }
+
+    if (localStorage.getItem("selectedProject")) {
+      todoController.setSelectedProject(localStorage.getItem("selectedProject"));  
+    } else {
+       return
+    }
+        
+    for (const project in storedProject) {
+          let activatedProjects = storedProject[project].map((item) => {
+              let todo = todoItem(item[0], item[1], item[2], item[3], item[4], item[5]);
+              return todo;
+          });
+          storedProject[project] = activatedProjects;
+      }
+
+      console.log(storedProject)
+
+      todoController.setProjects(storedProject);
+      updateDisplay();
+      updateProjectList();
+  }
+
+  // renderStoredProjects();
+
+
 })();
