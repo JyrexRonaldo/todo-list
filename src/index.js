@@ -1,6 +1,6 @@
 import "./reset.css";
 import "./style.css";
-import { format, isToday, isThisWeek, parseISO } from "date-fns";
+import { format, isToday, isThisWeek, parseISO, compareDesc } from "date-fns";
 
 const projects = function () {
   let _projects = {};
@@ -348,7 +348,7 @@ const screenController = (function () {
     taskList.textContent = "";
     if (project !== undefined) {
       project.forEach((todo, index) => {
-        taskList.append(createTask(todo, index));
+        taskList.append(createTask(todo, index, 0));
       });
     }
   };
@@ -357,12 +357,12 @@ const screenController = (function () {
     taskSectionTitle.textContent = todoController.getSelectedProject();
     taskList.textContent = "";
     filteredArray.forEach((item, index) => {
-      let listItem = createTask(item, index);
+      let listItem = createTask(item, index, 1);
       taskList.append(listItem);
     });
   };
 
-  function createTask(todo, index) {
+  function createTask(todo, index, code) {
     const todoItem = todo.getTodoItem();
     const listItem = document.createElement("li");
     listItem.dataset.index = index;
@@ -389,6 +389,11 @@ const screenController = (function () {
       editSpan,
       deleteSpan
     );
+    if (code === 1) {
+      const projectPara = document.createElement("p");
+      projectPara.textContent = `(${todoItem.projectName})`;
+      listItem.insertBefore(projectPara, detailsButton);
+    }
     return listItem;
   }
 
