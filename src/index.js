@@ -439,10 +439,20 @@ const screenController = (function () {
 
     if (e.target.textContent === "Add") {
       if (projectNameInput.value.trim() !== "") {
+        const projects = todoController.getProjects();
+        for (const project in projects) {
+          if (projectNameInput.value.trim() === project) {
+            projectNameInput.value = "";
+            alert("Project names must be different");
+            return
+          }
+        }
         todoController.createProject(projectNameInput.value);
         projectNameInput.value = "";
         projectDialog.close();
         updateProjectList();
+      } else {
+        alert("Project name can't be empty")
       }
     }
 
