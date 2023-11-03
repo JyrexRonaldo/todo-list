@@ -541,6 +541,8 @@ const screenController = (function () {
         resetTaskDialog();
         taskDialog.close();
         updateTaskList();
+      } else {
+        alert("Task details can't be empty");
       }
     }
 
