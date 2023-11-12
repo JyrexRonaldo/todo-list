@@ -433,7 +433,11 @@ const screenController = (function () {
 
     if (e.target.getAttribute("class") === "project") {
       addTaskButton.style.display = "flex";
-      todoController.setSelectedProject(e.target.textContent);
+      if (e.target.nodeName === "SPAN") {
+        todoController.setSelectedProject(e.target.parentNode.textContent);  
+      } else {
+        todoController.setSelectedProject(e.target.textContent);
+      }
       updateTaskList();
       updateTaskList();
     }
