@@ -434,7 +434,7 @@ const screenController = (function () {
     if (e.target.getAttribute("class") === "project") {
       addTaskButton.style.display = "flex";
       if (e.target.nodeName === "SPAN") {
-        todoController.setSelectedProject(e.target.parentNode.textContent);  
+        todoController.setSelectedProject(e.target.parentNode.textContent);
       } else {
         todoController.setSelectedProject(e.target.textContent);
       }
@@ -453,7 +453,7 @@ const screenController = (function () {
           if (projectNameInput.value.trim() === project) {
             projectNameInput.value = "";
             alert("Project names must be different");
-            return
+            return;
           }
         }
         todoController.createProject(projectNameInput.value);
@@ -461,7 +461,7 @@ const screenController = (function () {
         projectDialog.close();
         updateProjectList();
       } else {
-        alert("Project name can't be empty")
+        alert("Project name can't be empty");
       }
     }
 
@@ -608,6 +608,7 @@ const screenController = (function () {
       prioritySelect.setAttribute("disabled", true);
       formAddButton.style.display = "none";
       taskDialog.showModal();
+      editItemIndex = todoIndex;
     }
 
     storeProjects();
@@ -634,8 +635,11 @@ const screenController = (function () {
   }
 
   window.addEventListener("keydown", (e) => {
+    if (taskTitleInput.getAttribute("disabled")) {
+      formAddButton.style.display = "inline-block";
+      formAddButton.textContent = "Edit";
+    }
     removeAttribute();
-    formAddButton.style.display = "inline-block";
   });
 
   function removeAttribute() {
