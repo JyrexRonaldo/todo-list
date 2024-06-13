@@ -1,6 +1,6 @@
 import "./reset.css";
 import "./style.css";
-import { format, isToday, isThisWeek, parseISO, compareDesc } from "date-fns";
+import { format, isToday, isThisWeek, parseISO } from "date-fns";
 
 const projects = function () {
   let _projects = {};
@@ -77,9 +77,9 @@ const todoItem = (
     } else if (priority === "false") {
       priority = false;
     }
-    _todoItem.title = title ? title : _todoItem.title;
-    _todoItem.description = description ? description : _todoItem.description;
-    _todoItem.dueDate = dueDate ? dueDate : _todoItem.dueDate;
+    _todoItem.title = title;
+    _todoItem.description = description;
+    _todoItem.dueDate = dueDate;
     _todoItem.priority = priority;
   }
 
